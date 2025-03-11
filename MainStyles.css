@@ -1,0 +1,214 @@
+
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
+header {
+    background-color: #f8f8f8;
+    color: black;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    height: 130px;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between logo/text and icons */
+    gap: 10px;
+    padding: 10px 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.header-icon {
+    width: 30px; /* Adjust size as needed */
+    height: 30px;
+    fill: #6e6c6c; /* Default color */
+    transition: fill 0.3s ease;
+}
+
+.header-icon:hover {
+    fill: #800080; /* Change color on hover */
+}
+
+/* Align logo and text side by side */
+.header-container .Navimg {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px; /* Add space between logo and text */
+}
+
+/* Align h2 and h3 to the left */
+.text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align text to the left */
+    text-align: left; /* Ensure text alignment is left */
+    margin-left: 10px; /* Add space between logo and text */
+}
+
+.text-container h2, .text-container h3 {
+    text-align: left;
+    margin: 0; /* Remove default margins */
+}
+.text-container h2{
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight:700;
+    font-size: 40px;
+    color: #1e3348;
+}
+.text-container h3{
+    font-family:monospace;
+    font-weight:400;
+    font-size: 20px;
+    color: rgb(35, 22, 48);
+}
+
+/* Align header icons to the right */
+.header-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto; /* Push icons to the right */
+}
+
+
+/* Navigation bar styles */
+.navBar {
+    background-color: #1e3348;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 17px;
+    font-weight: 800;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+    position: relative;
+}
+
+.navBar ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.navBar ul li {
+    margin: 0 10px;
+}
+
+.navBar ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: inline-block;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Purple highlight effect to cover the entire text */
+/* Purple highlight effect for hover and active links */
+.navBar ul li a::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 100%; /* Match the width of the text */
+    height: 100%; /* Match the height of the text */
+    background: linear-gradient(130deg, #800080, #e47a8f);  /* Purple color */
+    border-radius: 25px; /* Slightly rounded corners for a pill shape */
+    opacity: 0; /* Initially invisible */
+    transition: all 0.3s ease;
+    z-index: -1; /* Place it behind the text */
+}
+
+.navBar ul li a:hover::before,
+.navBar ul li a.active::before {
+    transform: translate(-50%, -50%) scale(1); /* Scale up to full size */
+    opacity: 1; /* Make it visible */
+}
+
+.navBar ul li a:hover,
+.navBar ul li a.active {
+    color: white;
+    z-index: 1;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #1e3348;
+    color: #fff;
+    padding: 20px 0;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-section {
+    margin: 10px 20px;
+}
+
+.footer-section h4 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin: 5px 0;
+}
+
+.footer-section ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+    text-decoration: underline;
+}
+
+.footer-section p {
+    margin: 5px 0;
+}
+
+.social-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ffffff;
+    color: #ffffff;
+}
+svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor; /* Inherits color from parent */
+    transition: fill 0.3s ease;
+    color: #ffffff;
+}
+
+a:hover svg {
+    fill: #e47a8f; /* Change color on hover */
+}
