@@ -7,7 +7,7 @@ body, html {
 }
 
 header {
-    background-color: #f8f8f8;
+    background-color: #f4f4f4;
     color: black;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     position: sticky;
@@ -304,6 +304,7 @@ body {
     margin-bottom: 5px;
 }
 
+/*بداية ستايل الbutton*/
 .request-button {
     background-color: #1e3348; 
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
@@ -347,9 +348,10 @@ body {
     z-index: 1; 
 }
 
-.request-button:focus {
-    outline: none; 
-}
+/*نهاية ستايل ال button*/
+
+
+/*بداية ستايل الفورم*/
 
 .modal {
     display: none;  
@@ -401,7 +403,7 @@ form input, form textarea {
 }
 
 .submit-button {
-    background-color: #4CAF50;
+    background-color: #1e3348;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -414,3 +416,4 @@ form input, form textarea {
 .submit-button:hover {
     background-color: #45a049;
 }
+/*نهااية ستايل الفورم*/
