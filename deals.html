@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Home page</title>
+    <title>Deals</title>
     <link rel="stylesheet" href="MainStyles.css">
+
     <svg style="display: none;">
         <symbol id="facebook" viewBox="0 0 24 24">
           <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
@@ -27,6 +28,43 @@
               <path d="M16 17v-3h-5v-2h5V7l5 5-5 5zM14 2a2 2 0 0 1 2 2v2h-2V4H5v16h9v-2h2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9z"/>
             </symbol>
           </svg>
+
+          <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+            }
+            #dealsList {
+                list-style: none;
+                padding: 0;
+            }
+            .deal-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                border: 1px solid #ddd;
+                padding: 10px;
+                margin: 10px;
+                border-radius: 5px;
+            }
+            .popup {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+            }
+            .popup input, .popup button {
+                display: block;
+                margin: 10px 0;
+                width: 100%;
+            }
+        </style>
+
 </head>
 <body>
     <header>
@@ -57,7 +95,64 @@
         
     </nav>
 
-<h1> deals here</h1>
+    <h1>Deals</h1>
+    <button onclick="showPopup()">Add Deal</button>
+    <ul id="dealsList"></ul>
+    
+    <div id="popupForm" class="popup">
+        <h2>Add New Deal</h2>
+        <input type="file" id="dealImage">
+        <input type="text" id="dealName" placeholder="Product Name">
+        <input type="number" id="dealQuantity" placeholder="Quantity">
+        <input type="date" id="dealDate">
+        <input type="text" id="dealDistributor" placeholder="Distributor Name">
+        <button onclick="addDeal()">Done</button>
+        <button onclick="closePopup()">Cancel</button>
+    </div>
+    
+    <script>
+        function showPopup() {
+            document.getElementById('popupForm').style.display = 'block';
+        }
+        
+        function closePopup() {
+            document.getElementById('popupForm').style.display = 'none';
+        }
+        
+        function addDeal() {
+            let imageInput = document.getElementById('dealImage');
+            let imageFile = imageInput.files[0];
+            let name = document.getElementById('dealName').value;
+            let quantity = document.getElementById('dealQuantity').value;
+            let date = document.getElementById('dealDate').value;
+            let distributor = document.getElementById('dealDistributor').value;
+            
+            if (!name || !quantity || !date || !distributor || !imageFile) {
+                alert("Please fill all fields and select an image.");
+                return;
+            }
+            
+            let reader = new FileReader();
+            reader.onload = function(event) {
+                let dealsList = document.getElementById('dealsList');
+                let li = document.createElement('li');
+                li.className = 'deal-item';
+                li.innerHTML = `
+                    <img src="${event.target.result}" width="100" height="100" style="border-radius:5px;">
+                    <span>${name} - ${quantity} pcs - ${date} - ${distributor}</span>
+                    <button onclick="deleteDeal(this)">Delete</button>
+                `;
+                dealsList.appendChild(li);
+                closePopup();
+                document.getElementById('popupForm').reset();
+            };
+            reader.readAsDataURL(imageFile);
+        }
+        
+        function deleteDeal(button) {
+            button.parentElement.remove();
+        }
+    </script>
 
      <!-- Footer -->
      <footer>
