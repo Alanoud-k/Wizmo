@@ -27,11 +27,80 @@
               <path d="M16 17v-3h-5v-2h5V7l5 5-5 5zM14 2a2 2 0 0 1 2 2v2h-2V4H5v16h9v-2h2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9z"/>
             </symbol>
           </svg>
+
+          <style>
+            body {
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            }
+            .request, .accepted {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+            }
+            .request img, .accepted img {
+                width: 50px;
+                height: 50px;
+                margin-right: 10px;
+            }
+            
+            button{
+    background-color: #1e3348; 
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 17px;
+    font-weight: 800;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    border-radius: 25px; 
+    transition: all 0.3s ease;
+    border: none; 
+    cursor: pointer;
+    z-index: 1; 
+    margin-left: auto;
+    padding: 5px 10px;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 100%; 
+    height: 100%; 
+    background: linear-gradient(130deg, #800080, #e47a8f);  
+    border-radius: 25px; 
+    opacity: 0; 
+    transition: all 0.3s ease;
+    z-index: -1; 
+}
+
+button:hover::before,
+button.active::before {
+    transform: translate(-50%, -50%) scale(1); 
+    opacity: 1; 
+}
+
+button:hover {
+    color: white;
+    z-index: 1; 
+}
+
+            h2 {
+                font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+                margin: 20px;
+            }
+
+            
+        </style>
 </head>
 <body>
     <header>
         <div class="header-container">
-            <img src="pictures/wizmoLOGO.png" alt="logo" width="90" height="80" class="Navimg">
+            <img src="images/wizmoLOGO.png" alt="logo" width="90" height="80" class="Navimg">
             <div class="text-container">
                 <h2>WIZMO</h2>
                 <h3>your smartest warehouse gizmo</h3>
@@ -58,6 +127,63 @@
         
     </nav>
 
+    <h2>Collaboration Requests</h2>
+    <div id="requests"></div>
+    
+    <h2>Accepted Requests</h2>
+    <div id="acceptedRequests"></div>
+
+    <script>
+        const businessRequests = [
+            { name: "Coffee House", image: "images/coffeeLOGO.webp", description: "A cozy coffee shop.", message: "We would like to collaborate with you." },
+            { name: "Tech Solutions", image: "images/techLOGO.jpg", description: "Providing innovative tech solutions.", message: "Join us for an exciting partnership!" },
+            { name: "Green Market", image: "images/GreenMarketLOGO.webp", description: "Organic and fresh groceries.", message: "Let’s bring healthy food to everyone." }
+        ];
+
+        function renderRequests() {
+            const requestsContainer = document.getElementById("requests");
+            requestsContainer.innerHTML = "";
+            businessRequests.forEach((business, index) => {
+                const requestDiv = document.createElement("div");
+                requestDiv.className = "request";
+                requestDiv.innerHTML = `
+                    <img src="${business.image}" alt="${business.name}">
+                    <div>
+                        <strong>${business.name}</strong>
+                        <p>${business.description}</p>
+                        <p>${business.message}</p>
+                    </div>
+                    <button onclick="acceptRequest(${index})">Accept</button>
+                    <button onclick="declineRequest(${index})">Decline</button>
+                `;
+                requestsContainer.appendChild(requestDiv);
+            });
+        }
+
+        function acceptRequest(index) {
+            const acceptedContainer = document.getElementById("acceptedRequests");
+            const business = businessRequests[index];
+            const acceptedDiv = document.createElement("div");
+            acceptedDiv.className = "accepted";
+            acceptedDiv.innerHTML = `
+                <img src="${business.image}" alt="${business.name}">
+                <div>
+                    <strong>${business.name}</strong>
+                    <p>${business.description}</p>
+                    <p>${business.message}</p>
+                </div>
+            `;
+            acceptedContainer.appendChild(acceptedDiv);
+            declineRequest(index);
+        }
+
+        function declineRequest(index) {
+            businessRequests.splice(index, 1);
+            renderRequests();
+        }
+
+        renderRequests();
+    </script>
 
 
      <!-- Footer -->
