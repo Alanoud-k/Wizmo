@@ -417,3 +417,104 @@ form input, form textarea {
     background-color: #45a049;
 }
 /*نهااية ستايل الفورم*/
+
+/*Profile Page*/
+
+/* Profile Container */
+.profile-container {
+    width: 35%;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+    margin: 120px auto 20px;
+}
+
+/* Profile Header */
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.profile-header img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.profile-header input[type="file"] {
+    background: #f4f4f4;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+/* Profile Form */
+#profile-form {
+    display: flex;
+    flex-direction: column;
+}
+
+#profile-form label {
+    margin: 10px 0 5px;
+    font-weight: 600;
+}
+
+#profile-form input, #profile-form textarea {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: 'Arial', sans-serif;
+
+
+}
+
+#profile-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Profile Form Buttons */
+.save-btn, .cancel-btn {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 800;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.save-btn {
+    background-color: #1e3348; /* Dark blue (same as navigation bar) */
+}
+
+.cancel-btn {
+    background-color: #1e3348; /* Dark blue */
+}
+
+.save-btn:hover, .cancel-btn:hover {
+    background: linear-gradient(130deg, #800080, #e47a8f); /* Purple gradient on hover */
+    color: white;
+}
+
+.save-btn:active, .cancel-btn:active {
+    background-color: #800080; /* Purple for active state */
+}
+
+select {
+    appearance: none;
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.location-list {
+    color: #6e6c6c;
+}
