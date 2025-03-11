@@ -47,22 +47,99 @@
                 margin: 10px;
                 border-radius: 5px;
             }
-            .popup {
-                display: none;
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: white;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
-            }
-            .popup input, .popup button {
-                display: block;
-                margin: 10px 0;
-                width: 100%;
-            }
+           
+            button{
+    background-color: #1e3348; 
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 17px;
+    font-weight: 800;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: inline-block;
+    position: relative;
+    border-radius: 25px; 
+    transition: all 0.3s ease;
+    border: none; 
+    cursor: pointer;
+    z-index: 1; 
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 100%; 
+    height: 100%; 
+    background: linear-gradient(130deg, #800080, #e47a8f);  
+    border-radius: 25px; 
+    opacity: 0; 
+    transition: all 0.3s ease;
+    z-index: -1; 
+}
+
+button:hover::before,
+button.active::before {
+    transform: translate(-50%, -50%) scale(1); 
+    opacity: 1; 
+}
+
+button:hover {
+    color: white;
+    z-index: 1; 
+}
+
+.popup {
+    display: none;  
+    position: fixed; 
+    z-index: 1;  
+    left: 0;
+    top: 0;
+    width: 100%;  
+    height: 100%;  
+    overflow: auto;  
+    background-color: rgba(0, 0, 0, 0.4);  
+}
+
+.popup-content {
+    background-color: white;
+    margin: 15% auto;  
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;  
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form input, form textarea {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
         </style>
 
 </head>
@@ -95,64 +172,71 @@
         
     </nav>
 
-    <h1>Deals</h1>
-    <button onclick="showPopup()">Add Deal</button>
-    <ul id="dealsList"></ul>
-    
-    <div id="popupForm" class="popup">
+    <br>
+    <button class="add-deal-btn" onclick="showPopup()">Add Deal</button>
+<ul id="dealsList"></ul>
+
+<div id="popupForm" class="popup">
+    <div class="popup-content">
         <h2>Add New Deal</h2>
-        <input type="file" id="dealImage">
-        <input type="text" id="dealName" placeholder="Product Name">
-        <input type="number" id="dealQuantity" placeholder="Quantity">
-        <input type="date" id="dealDate">
-        <input type="text" id="dealDistributor" placeholder="Distributor Name">
-        <button onclick="addDeal()">Done</button>
-        <button onclick="closePopup()">Cancel</button>
+        <form id="addDealForm" onsubmit="addDeal(event)"> 
+            <input type="file" id="dealImage">
+            <input type="text" id="dealName" placeholder="Product Name">
+            <input type="number" id="dealQuantity" placeholder="Quantity">
+            <input type="date" id="dealDate">
+            <input type="text" id="dealDistributor" placeholder="Distributor Name">
+            <button type="submit">Done</button>
+            <button type="button" onclick="closePopup()">Cancel</button>
+        </form>
     </div>
-    
-    <script>
-        function showPopup() {
-            document.getElementById('popupForm').style.display = 'block';
+</div>
+
+<script>
+    function showPopup() {
+        document.getElementById('popupForm').style.display = 'block';
+    }
+
+    function closePopup() {
+        document.getElementById('popupForm').style.display = 'none';
+    }
+
+    function addDeal(event) {
+        event.preventDefault(); // Prevent form submission
+
+        let imageInput = document.getElementById('dealImage');
+        let imageFile = imageInput.files[0];
+        let name = document.getElementById('dealName').value;
+        let quantity = document.getElementById('dealQuantity').value;
+        let date = document.getElementById('dealDate').value;
+        let distributor = document.getElementById('dealDistributor').value;
+
+        if (!name || !quantity || !date || !distributor || !imageFile) {
+            alert("Please fill all fields and select an image.");
+            return;
         }
-        
-        function closePopup() {
-            document.getElementById('popupForm').style.display = 'none';
-        }
-        
-        function addDeal() {
-            let imageInput = document.getElementById('dealImage');
-            let imageFile = imageInput.files[0];
-            let name = document.getElementById('dealName').value;
-            let quantity = document.getElementById('dealQuantity').value;
-            let date = document.getElementById('dealDate').value;
-            let distributor = document.getElementById('dealDistributor').value;
-            
-            if (!name || !quantity || !date || !distributor || !imageFile) {
-                alert("Please fill all fields and select an image.");
-                return;
-            }
-            
-            let reader = new FileReader();
-            reader.onload = function(event) {
-                let dealsList = document.getElementById('dealsList');
-                let li = document.createElement('li');
-                li.className = 'deal-item';
-                li.innerHTML = `
-                    <img src="${event.target.result}" width="100" height="100" style="border-radius:5px;">
-                    <span>${name} - ${quantity} pcs - ${date} - ${distributor}</span>
-                    <button onclick="deleteDeal(this)">Delete</button>
-                `;
-                dealsList.appendChild(li);
-                closePopup();
-                document.getElementById('popupForm').reset();
-            };
-            reader.readAsDataURL(imageFile);
-        }
-        
-        function deleteDeal(button) {
-            button.parentElement.remove();
-        }
-    </script>
+
+        let reader = new FileReader();
+        reader.onload = function(event) {
+            let dealsList = document.getElementById('dealsList');
+            let li = document.createElement('li');
+            li.className = 'deal-item';
+            li.innerHTML = `
+                <img src="${event.target.result}" width="100" height="100" style="border-radius:5px;">
+                <span>${name} - ${quantity} pcs - ${date} - ${distributor}</span>
+                <button onclick="deleteDeal(this)">Delete</button>
+            `;
+            dealsList.appendChild(li);
+            closePopup();
+            document.getElementById('addDealForm').reset(); // Proper form reset
+        };
+        reader.readAsDataURL(imageFile);
+    }
+
+    function deleteDeal(button) {
+        button.parentElement.remove();
+    }
+</script>
+
 
      <!-- Footer -->
      <footer>
