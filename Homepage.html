@@ -3,6 +3,7 @@
 <head>
     <title>Home page</title>
     <link rel="stylesheet" href="MainStyles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <svg style="display: none;">
         <symbol id="facebook" viewBox="0 0 24 24">
           <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
@@ -58,7 +59,54 @@
         </ul>
         
     </nav>
+    <main class="home-content">
+      <aside class="home-sidebar">
+        <div class="sidebar-box">
+            <i class="fas fa-user sidebar-icon"></i>
+            <h3>Hello!</h3>
+            <a href="profile.html"><button class="sidebar-button">Edit Profile</button></a>
+        </div>
+        <div class="sidebar-box">
+            <i class="fas fa-globe sidebar-icon"></i>
+            <h3>Find Collaboration</h3>
+            <a href="request.html"><button class="sidebar-button">Find Collaboration</button></a>
+        </div>
+        <div class="sidebar-box">
+            <i class="fas fa-tags sidebar-icon"></i>
+            <h3>My Deals</h3>
+            <a href="deals.html"><button class="sidebar-button">View Deals</button></a>
+        </div>
+    </aside>
 
+      <section class="home-products">
+        <div class="product-list-container">
+            <h2>My products</h2>
+            <div class="product-card">
+                <img src="" alt="Product 1">
+                <div class="details">
+                    <h4>Product Name 1</h4>
+                    <p>Description of product 1.</p>
+                </div>
+                <div class="price-quantity">
+                    <p>Price: $19.99</p>
+                    <p>In Stock: 50</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="product2.jpg" alt="Product 2">
+                <div class="details">
+                    <h4>Product Name 2</h4>
+                    <p>Description of product 2.</p>
+                </div>
+                <div class="price-quantity">
+                    <p>Price: $29.99</p>
+                    <p>In Stock: 25</p>
+                </div>
+            </div>
+            </div>
+            <a href="Products.html"><button class="products-button">Products Page</button></a>
+    </section>
+  </main>
 
 
      <!-- Footer -->
