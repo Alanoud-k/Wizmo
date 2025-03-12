@@ -6,54 +6,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="login.css">
+    
     <title>Login page</title>
 </head>
 
 <body>
+    
 
     <div class="container" id="container">
         <div class="form-container sign-up">
             <form>
                 <h1>Create Account</h1>
                 <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com" class="icon"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.facebook.com" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://twitter.com" class="icon"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div>
+                
                 <span>or use your email for registeration</span>
+                
+
                 <input type="text" placeholder="Name">
+                
                 <input type="email" placeholder="Email">
+                <input type="tel" placeholder="phoneNo">
                 <input type="password" placeholder="Password">
-                <button>Sign Up</button>
+                <input type="text" placeholder="Business Name">
+                <input type="text" placeholder="category,e.g: Retail, Tech ">
+                <input type="text" placeholder="Bio/Describtion">
+                <div class="select-wrapper">
+                    <select>
+                        <option value="" disabled selected>Location</option>
+                        <option value="Riyadh">Riyadh</option>
+                        <option value="Jeddah">Jeddah</option>
+                        <option value="Mecca">Mecca</option>
+                        <option value="Dammam">Dammam</option>
+                        <option value="Khobar">Khobar</option>
+                        <option value="Medina">Medina</option>
+                        <option value="Tabuk">Tabuk</option>
+                        <option value="Abha">Abha</option>
+                    </select>
+                    </div>
+                    <button type="button" onclick="location.href='HomePage.html'">Sign Up</button>
             </form>
         </div>
         <div class="form-container sign-in">
             <form>
                 <h1>Sign In</h1>
                 <div class="social-icons">
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com" class="icon"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.facebook.com" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://twitter.com" class="icon"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/yourusername" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div>
                 <span>or use your email password</span>
                 <input type="email" placeholder="Email">
                 <input type="password" placeholder="Password">
                 <a href="#">Forget Your Password?</a>
-                <button>Sign In</button>
+                <button type="button" onclick="location.href='HomePage.html'">Sign In</button>
             </form>
         </div>
         <div class="toggle-container">
             <div class="toggle">
                 <div class="toggle-panel toggle-left">
+                    <img src="wizmoLOGO.png" alt="logo" width="90" height="80">
                     <h1>Welcome Back!</h1>
-                    <p>Enter your personal details to use all of site features</p>
+                    <p>Please enter your personal details to continue managing your warehouse.</p>
                     <button class="hidden" id="login">Sign In</button>
                 </div>
                 <div class="toggle-panel toggle-right">
+                    <img src="wizmoLOGO.png" alt="logo" width="90" height="80">
                     <h1>Hello, Friend!</h1>
-                    <p>Register with your personal details to use all of site features</p>
+                    <p>To begin managing your warehouse, please provide the following information.</p>
                     <button class="hidden" id="register">Sign Up</button>
                 </div>
             </div>

@@ -27,10 +27,13 @@ body{
     width: 768px;
     max-width: 100%;
     min-height: 480px;
+    max-height: 95vh; /* Prevents the container from exceeding viewport */
+    
 }
 
+
 .container p{
-    font-size: 14px;
+    font-size: 12px;
     line-height: 20px;
     letter-spacing: 0.3px;
     margin: 20px 0;
@@ -48,7 +51,7 @@ body{
 }
 
 .container button{
-    background-color: #512da8;
+    background-color: #800080;
     color: #fff;
     font-size: 12px;
     padding: 10px 45px;
@@ -72,8 +75,14 @@ body{
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 0 40px;
+    
     height: 100%;
+    /*---*/
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    max-height: 100%;
+    padding: 20px;
 }
 
 .container input{
@@ -85,6 +94,37 @@ body{
     border-radius: 8px;
     width: 100%;
     outline: none;
+}
+.container select {
+    background-color: #eee;
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 100%;
+    outline: none;
+    appearance: none; /* Removes default arrow */
+    -webkit-appearance: none; /* For Safari */
+    -moz-appearance: none; /* For Firefox */
+    cursor: pointer;
+}
+
+/* Add a custom dropdown arrow */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-wrapper::after {
+    content: '\25BC'; /* Unicode for down arrow */
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #800080;
+    font-size: 12px;
 }
 
 .form-container{
@@ -104,11 +144,28 @@ body{
     transform: translateX(100%);
 }
 
-.sign-up{
+
+.sign-up {
     left: 0;
     width: 50%;
     opacity: 0;
     z-index: 1;
+    overflow-y: auto;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px; 
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #888 #f1f1f1; /* For Firefox */
+}
+
+.sign-up form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    justify-content: flex-start; /*align content to the top*/
 }
 
 .container.active .sign-up{
@@ -116,6 +173,25 @@ body{
     opacity: 1;
     z-index: 5;
     animation: move 0.6s;
+}
+
+
+.sign-up::-webkit-scrollbar {
+    width: 4px; /* For Chrome, Safari, Edge */
+}
+
+.sign-up::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.sign-up::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.sign-up::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 @keyframes move{
@@ -162,9 +238,9 @@ body{
 }
 
 .toggle{
-    background-color: #512da8;
+    background-color: #e47a8f;
     height: 100%;
-    background: linear-gradient(to right, #5c6bc0, #512da8);
+    background: linear-gradient(160deg, #800080, #e47a8f);
     color: #fff;
     position: relative;
     left: -100%;
