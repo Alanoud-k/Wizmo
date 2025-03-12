@@ -140,6 +140,13 @@ form input, form textarea {
     border-radius: 5px;
 }
 
+.deal-buttons {
+    display: flex;
+    justify-content: flex-end; /* Aligns buttons to the right */
+    gap: 10px; /* Adjusts spacing between buttons */
+}
+
+
         </style>
 
 </head>
@@ -175,68 +182,116 @@ form input, form textarea {
 
     <br>
     <button class="add-deal-btn" onclick="showPopup()">Add Deal</button>
-<ul id="dealsList"></ul>
-
-<div id="popupForm" class="popup">
-    <div class="popup-content">
-        <h2>Add New Deal</h2>
-        <form id="addDealForm" onsubmit="addDeal(event)"> 
-            <input type="file" id="dealImage">
-            <input type="text" id="dealName" placeholder="Product Name">
-            <input type="number" id="dealQuantity" placeholder="Quantity">
-            <input type="date" id="dealDate">
-            <input type="text" id="dealDistributor" placeholder="Distributor Name">
-            <button type="submit">Done</button>
-            <button type="button" onclick="closePopup()">Cancel</button>
-        </form>
+    <ul id="dealsList"></ul>
+    
+    <div id="popupForm" class="popup">
+        <div class="popup-content">
+            <h2 id="popupTitle">Add New Deal</h2>
+            <form id="addDealForm" onsubmit="saveDeal(event)"> 
+                <input type="file" id="dealImage">
+                <input type="text" id="dealName" placeholder="Product Name">
+                <input type="number" id="dealQuantity" placeholder="Quantity">
+                <input type="date" id="dealDate">
+                <input type="text" id="dealDistributor" placeholder="Distributor Name">
+                <button type="submit" id="submitButton">Done</button>
+                <button type="button" onclick="closePopup()">Cancel</button>
+            </form>
+        </div>
     </div>
-</div>
-
-<script>
-    function showPopup() {
-        document.getElementById('popupForm').style.display = 'block';
-    }
-
-    function closePopup() {
-        document.getElementById('popupForm').style.display = 'none';
-    }
-
-    function addDeal(event) {
-        event.preventDefault(); // Prevent form submission
-
-        let imageInput = document.getElementById('dealImage');
-        let imageFile = imageInput.files[0];
-        let name = document.getElementById('dealName').value;
-        let quantity = document.getElementById('dealQuantity').value;
-        let date = document.getElementById('dealDate').value;
-        let distributor = document.getElementById('dealDistributor').value;
-
-        if (!name || !quantity || !date || !distributor || !imageFile) {
-            alert("Please fill all fields and select an image.");
-            return;
+    
+    <script>
+        let deals = []; // Store deals
+        let editIndex = -1; // Track edit mode
+    
+        function showPopup(isEditing = false) {
+            document.getElementById('popupTitle').textContent = isEditing ? "Edit Deal" : "Add New Deal";
+            document.getElementById('submitButton').textContent = isEditing ? "Save Changes" : "Done";
+            document.getElementById('popupForm').style.display = 'block';
         }
-
-        let reader = new FileReader();
-        reader.onload = function(event) {
+    
+        function closePopup() {
+            document.getElementById('popupForm').style.display = 'none';
+            document.getElementById('addDealForm').reset();
+            editIndex = -1;
+        }
+    
+        function saveDeal(event) {
+            event.preventDefault();
+    
+            let imageInput = document.getElementById('dealImage');
+            let imageFile = imageInput.files[0];
+            let name = document.getElementById('dealName').value;
+            let quantity = document.getElementById('dealQuantity').value;
+            let date = document.getElementById('dealDate').value;
+            let distributor = document.getElementById('dealDistributor').value;
+    
+            if (!name || !quantity || !date || !distributor) {
+                alert("Please fill all fields.");
+                return;
+            }
+    
+            function updateDeal(imageSrc) {
+                let dealData = { image: imageSrc, name, quantity, date, distributor };
+    
+                if (editIndex === -1) {
+                    deals.push(dealData); // Add new deal
+                } else {
+                    deals[editIndex] = dealData; // Update deal
+                }
+    
+                displayDeals();
+                closePopup();
+            }
+    
+            if (imageFile) {
+                let reader = new FileReader();
+                reader.onload = function(event) {
+                    updateDeal(event.target.result);
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                let existingImage = editIndex !== -1 ? deals[editIndex].image : "";
+                updateDeal(existingImage);
+            }
+        }
+    
+        function displayDeals() {
             let dealsList = document.getElementById('dealsList');
-            let li = document.createElement('li');
-            li.className = 'deal-item';
-            li.innerHTML = `
-                <img src="${event.target.result}" width="100" height="100" style="border-radius:5px;">
-                <span>${name} - ${quantity} pcs - ${date} - ${distributor}</span>
-                <button onclick="deleteDeal(this)">Delete</button>
-            `;
-            dealsList.appendChild(li);
-            closePopup();
-            document.getElementById('addDealForm').reset(); // Proper form reset
-        };
-        reader.readAsDataURL(imageFile);
-    }
+            dealsList.innerHTML = "";
+            deals.forEach((deal, index) => {
+                let li = document.createElement('li');
+                li.className = 'deal-item';
+                li.innerHTML = `
+                    <img src="${deal.image}" width="100" height="100" style="border-radius:5px;">
+                    <span>${deal.name} - ${deal.quantity} pcs - ${deal.date} - ${deal.distributor}</span>
+                    <div class="deal-buttons">
+                    <button onclick="editDeal(${index})">Edit</button>
+                    <button onclick="deleteDeal(${index})">Delete</button>
+                    </div>
+                `;
+                dealsList.appendChild(li);
+            });
+        }
+    
+        function editDeal(index) {
+            editIndex = index;
+            let deal = deals[index];
+    
+            document.getElementById('dealName').value = deal.name;
+            document.getElementById('dealQuantity').value = deal.quantity;
+            document.getElementById('dealDate').value = deal.date;
+            document.getElementById('dealDistributor').value = deal.distributor;
+    
+            showPopup(true);
+        }
+    
+        function deleteDeal(index) {
+            deals.splice(index, 1);
+            displayDeals();
+        }
+    </script>
+    
 
-    function deleteDeal(button) {
-        button.parentElement.remove();
-    }
-</script>
 
 
      <!-- Footer -->
@@ -250,7 +305,7 @@ form input, form textarea {
                     <li><a href="Products.html">Products</a></li>
                     <li><a href="deals.html">Deals</a></li>
                     <li><a href="community.html">Community</a></li>
-                    <li><a href="request.html">Request</a></li>
+                    <li><a href="request.html">Requests</a></li>
                 </ul>
             </div>
             <div class="footer-section">

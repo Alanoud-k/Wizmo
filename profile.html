@@ -58,7 +58,7 @@
             <li class="link2"><a href="Products.html">Products warehouse</a></li>
             <li class="link3"><a href="deals.html">Distributions deals</a></li>
             <li class="link4"><a href="Community.html">Community</a></li>
-            <li class="link5"><a href="request.html">Request</a></li>
+            <li class="link5"><a href="request.html">Requests</a></li>
         </ul>
         
     </nav>
@@ -72,16 +72,16 @@
             </div>
             <form id="profile-form">
                 <label>Business Name:</label>
-                <input type="text" id="business-name" placeholder="Change your business name">
+                <input type="text" id="business-name" name="businessName" placeholder="Change your business name">
 				
 				<label>Username:</label>
-                <input type="text" id="username" placeholder="Change your username">
+                <input type="text" id="username" name="userName" placeholder="Change your username">
 				
                 <label>Category:</label>
-                <input type="text" id="category" placeholder="e.g., Retail, Tech">
+                <input type="text" id="category" name="category" placeholder="e.g., Retail, Tech">
 
                 <label>Location:</label>
-                <select class="location-list" id="cityUpdate">
+                <select class="location-list" id="cityUpdate" name="location">
                 <option value="">City</option>
                 <option value="Riyadh">Riyadh</option>
                 <option value="Jeddah">Jeddah</option>
@@ -94,16 +94,16 @@
             </select>
 
                 <label>Email:</label>
-                <input type="email" id="email" placeholder="Change your email">
+                <input type="email" id="email" name="email" placeholder="Change your email">
 
                 <label>Phone Number:</label>
-                <input type="tel" id="phone" placeholder="Change your phone number">
+                <input type="tel" id="phone" name="phoneNo" placeholder="Change your phone number">
 
                 <label>Password:</label>
-                <input type="password" id="password" placeholder="Change your password">
+                <input type="password" id="password" name="pass" placeholder="Change your password">
 
                 <label>Bio/Description:</label>
-                <textarea id="bio" placeholder="Brief description of your business"></textarea>
+                <textarea id="bio" name="bio" placeholder="Brief description of your business"></textarea>
 
                 <div class="buttons">
                     <button type="submit" class="save-btn">Save Changes</button>
@@ -163,7 +163,53 @@
         window.location.href = "Homepage.html"; // Redirects to Home Page
     });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const profilePicInput = document.getElementById("upload-pic");
+        const profilePic = document.getElementById("profile-pic");
+        const passwordInput = document.getElementById("password");
+        const passwordToggle = document.createElement("span");
 
+        // Live Profile Picture Preview
+        profilePicInput.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function () {
+                    profilePic.src = reader.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Password Toggle Button
+        passwordToggle.innerText = "👁";
+        passwordToggle.style.cursor = "pointer";
+        passwordInput.parentNode.appendChild(passwordToggle);
+
+        passwordToggle.addEventListener("click", function () {
+            passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+        });
+
+        // Auto-Save Form Data
+        const formFields = document.querySelectorAll("#profile-form input, #profile-form textarea, #profile-form select");
+
+        formFields.forEach(field => {
+            const savedValue = localStorage.getItem(field.id);
+            if (savedValue) field.value = savedValue;
+
+            field.addEventListener("input", function () {
+                localStorage.setItem(field.id, field.value);
+            });
+        });
+
+        // Clear Form on Cancel
+        document.querySelector(".cancel-btn").addEventListener("click", function () {
+            localStorage.clear();
+            document.getElementById("profile-form").reset();
+        });
+    });
+</script>
 </body>
 
 
