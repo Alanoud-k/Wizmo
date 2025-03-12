@@ -517,3 +517,16 @@ ul li {
 .products-button:hover {
     background: linear-gradient(160deg, #960096, #3a315b);
 }
+.more-link {
+    display: block; /* Take full width */
+    text-align: center; /* Center the text */
+    margin-top: 10px; /* Add some space */
+    color: #800080; /* Purple color */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold; /* Make it bold */
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.more-link:hover {
+    color: #e47a8f; /* Change color on hover */
+}
