@@ -28,6 +28,51 @@
               <path d="M16 17v-3h-5v-2h5V7l5 5-5 5zM14 2a2 2 0 0 1 2 2v2h-2V4H5v16h9v-2h2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9z"/>
             </symbol>
           </svg>
+          <script>
+            // Fetch and display products
+            async function fetchProducts() {
+                try {
+                    const response = await fetch('php4wizmo/getProducts.php'); // Call the PHP endpoint
+                    const products = await response.json(); // Parse the JSON response
+        
+                    const productListContainer = document.querySelector('.product-list-container');
+                    if (productListContainer) {
+                        // Clear existing products
+                        productListContainer.innerHTML = '<h2>My products</h2>';
+        
+                        // Add each product to the list
+                        products.forEach(product => {
+                            const productCard = `
+                                <div class="product-card">
+                                    <img src="${product.image}" alt="${product.productName}">
+                                    <div class="details">
+                                        <h4>${product.productName}</h4>
+                                        <p>${product.description}</p>
+                                    </div>
+                                    <div class="price-quantity">
+                                        <p>Price: $${product.price}</p>
+                                        <p>In Stock: ${product.quantity}</p>
+                                    </div>
+                                </div>
+                            `;
+                            productListContainer.innerHTML += productCard;
+                        });
+        
+                        // Add "More" link and button
+                        productListContainer.innerHTML += `
+                            <a href="Products.html" class="more-link"><h4>More..</h4></a>
+                            <a href="Products.html"><button class="products-button">Products Page</button></a>
+                        `;
+                    }
+                } catch (error) {
+                    console.error('Error fetching products:', error);
+                }
+            }
+        
+            // Run the function when the page loads
+            window.onload = fetchProducts;
+            
+        </script>
 </head>
 <body>
     <header>
@@ -63,7 +108,7 @@
       <aside class="home-sidebar">
         <div class="sidebar-box">
             <i class="fas fa-user sidebar-icon"></i>
-            <h3>Hello!</h3>
+            <h3>Hello there!</h3>
             <a href="profile.html"><button class="sidebar-button">Edit Profile</button></a>
         </div>
         <div class="sidebar-box">
@@ -81,31 +126,7 @@
       <section class="home-products">
         <div class="product-list-container">
             <h2>My products</h2>
-            <div class="product-card">
-                <img src="images/book1.jpg" alt="Product 1">
-                <div class="details">
-                    <h4>The Thursday murder club , Book</h4>
-                    <p>Description of product: A graet thriller. </p>
-                </div>
-                <div class="price-quantity">
-                    <p>Price: $19.99</p>
-                    <p>In Stock: 56</p>
-                </div>
-            </div>
-            <div class="product-card">
-                <img src="images/book3.jpg" alt="Product 2">
-                <div class="details">
-                    <h4>The midnight library , Book</h4>
-                    <p>Description of product: A Custmors favroite </p>
-                </div>
-                <div class="price-quantity">
-                    <p>Price: $17.99</p>
-                    <p>In Stock: 78</p>
-                </div>
-                
-            </div><a href="Products.html" class="more-link"><h4>More..</h4></a>
-            </div>
-            <a href="Products.html"><button class="products-button">Products Page</button></a>
+           
     </section>
   </main>
 

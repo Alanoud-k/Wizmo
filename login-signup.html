@@ -12,7 +12,7 @@
 <body>
     <div class="container" id="container">
         <div class="form-container sign-up">
-            <form id="signupForm">
+            <form id="signupForm" action="php4wizmo/index.php" method="POST">
                 <h1>Create Account</h1>
                 <div class="social-icons">
                     <a href="https://www.instagram.com" class="icon"><i class="fa-brands fa-instagram"></i></a>
@@ -20,16 +20,16 @@
                     <a href="https://twitter.com" class="icon"><i class="fa-brands fa-twitter"></i></a>
                     <a href="https://www.linkedin.com" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div>
-                <span>or use your email for registeration</span>
-                <input type="text" placeholder="Name" id="nameSignup">
-                <input type="email" placeholder="Email" id="emailSignup">
-                <input type="tel" placeholder="phoneNo" id="phoneSignup">
-                <input type="password" placeholder="Password" id="passwordSignup">
-                <input type="text" placeholder="Business Name" id="businessSignup">
-                <input type="text" placeholder="category,e.g: Retail, Tech " id="categorySignup">
-                <input type="text" placeholder="Bio/Describtion" id="bioSignup">
+                <span>or use your email for registration</span>
+                <input type="text" placeholder="Name" name="name" required>
+                <input type="email" placeholder="Email" name="email" required>
+                <input type="tel" placeholder="Phone Number" name="phone" required>
+                <input type="password" placeholder="Password" name="password" required>
+                <input type="text" placeholder="Business Name" name="business" required>
+                <input type="text" placeholder="Category, e.g: Retail, Tech" name="category" required>
+                <input type="text" placeholder="Bio/Description" name="bio" required>
                 <div class="select-wrapper">
-                    <select id="locationSignup">
+                    <select name="location" required>
                         <option value="" disabled selected>Location</option>
                         <option value="Riyadh">Riyadh</option>
                         <option value="Jeddah">Jeddah</option>
@@ -45,7 +45,7 @@
             </form>
         </div>
         <div class="form-container sign-in">
-            <form id="signinForm">
+            <form id="signinForm" action="php4wizmo/index.php" method="POST">
                 <h1>Log In</h1>
                 <div class="social-icons">
                     <a href="https://www.instagram.com" class="icon"><i class="fa-brands fa-instagram"></i></a>
@@ -54,8 +54,8 @@
                     <a href="https://www.linkedin.com/in/yourusername" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div>
                 <span>or use your email password</span>
-                <input type="email" placeholder="Email" id="emailSignin">
-                <input type="password" placeholder="Password" id="passwordSignin">
+                <input type="email" placeholder="Email" name="email" required>
+                <input type="password" placeholder="Password" name="password" required>
                 <a href="#">Forget Your Password?</a>
                 <button type="submit">Log In</button>
             </form>
@@ -82,8 +82,6 @@
         const container = document.getElementById('container');
         const registerBtn = document.getElementById('register');
         const loginBtn = document.getElementById('login');
-        const signupForm = document.getElementById("signupForm");
-        const signinForm = document.getElementById("signinForm");
 
         registerBtn.addEventListener('click', () => {
             container.classList.add("active");
@@ -91,46 +89,6 @@
 
         loginBtn.addEventListener('click', () => {
             container.classList.remove("active");
-        });
-
-        // Validate Sign Up form
-        signupForm.addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent form submission
-
-            const name = document.getElementById("nameSignup").value.trim();
-            const email = document.getElementById("emailSignup").value.trim();
-            const phone = document.getElementById("phoneSignup").value.trim();
-            const password = document.getElementById("passwordSignup").value.trim();
-            const business = document.getElementById("businessSignup").value.trim();
-            const category = document.getElementById("categorySignup").value.trim();
-            const bio = document.getElementById("bioSignup").value.trim();
-            const location = document.getElementById("locationSignup").value;
-
-            // Check if all fields are filled
-            if (!name || !email || !phone || !password || !business || !category || !bio || !location) {
-                alert("Please fill in all fields.");
-                return;
-            }
-
-            // Redirect to Homepage if validation passes
-            window.location.href = "Homepage.html";
-        });
-
-        // Validate Sign In form
-        signinForm.addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent form submission
-
-            const email = document.getElementById("emailSignin").value.trim();
-            const password = document.getElementById("passwordSignin").value.trim();
-
-            // Check if all fields are filled
-            if (!email || !password) {
-                alert("Please fill in all fields.");
-                return;
-            }
-
-            // Redirect to Homepage if validation passes
-            window.location.href = "Homepage.html";
         });
     </script>
 </body>
