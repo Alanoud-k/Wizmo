@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edit this template
--->
 <html>
     <head>
         <meta charset="UTF-8">
@@ -10,6 +6,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
     </head>
     <body>
         <?php
+        // Start the session
+        session_start();
+
         // Database connection
         $servername = "localhost";
         $username = "root"; // Default username for MAMP
@@ -59,6 +58,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
                                         VALUES ('$name', '$business', '$category', '$email', '$hashed_password', '$phone', '$location', '$bio', '$target_file')";
 
                                 if ($conn->query($sql) === TRUE) {
+                                    // Store the username in the session
+                                    $_SESSION['username'] = $name;
+
                                     // Redirect to Homepage.html
                                     header("Location: ../Homepage.html");
                                     exit();
@@ -85,7 +87,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Project/PHP/PHPProject.php to edi
 
         // Handle Log In form submission
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['email']) && !isset($_POST['name'])) {
-            session_start(); // Start the session
             $email = $_POST['email'];
             $plain_password = $_POST['password']; // Plain-text password from the form
 
