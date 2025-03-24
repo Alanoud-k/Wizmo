@@ -7,41 +7,48 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="login.css">
     <title>Login page</title>
+   
 </head>
 
 <body>
     <div class="container" id="container">
         <div class="form-container sign-up">
-            <form id="signupForm" action="php4wizmo/index.php" method="POST">
-                <h1>Create Account</h1>
-                <div class="social-icons">
-                    <a href="https://www.instagram.com" class="icon"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="https://www.facebook.com" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="https://twitter.com" class="icon"><i class="fa-brands fa-twitter"></i></a>
-                    <a href="https://www.linkedin.com" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+            <form id="signupForm" action="php4wizmo/index.php" method="POST" enctype="multipart/form-data">
+                <!-- Step 1 -->
+                <div class="step1">
+                    <h1>Create Account</h1>
+                    <div class="social-icons">
+                        <a href="https://www.instagram.com" class="icon"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.facebook.com" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://twitter.com" class="icon"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="https://www.linkedin.com" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                    <span>Enter your peronal information ,or use your email for registration.</span>
+                    <input type="text" placeholder="Name" name="name" required>
+                    <input type="email" placeholder="Email" name="email" required>
+                    <input type="tel" placeholder="Phone Number" name="phone" required>
+                    <input type="password" placeholder="Password" name="password" required>
+                    <button type="button" id="nextStep">Next</button>
                 </div>
-                <span>or use your email for registration</span>
-                <input type="text" placeholder="Name" name="name" required>
-                <input type="email" placeholder="Email" name="email" required>
-                <input type="tel" placeholder="Phone Number" name="phone" required>
-                <input type="password" placeholder="Password" name="password" required>
-                <input type="text" placeholder="Business Name" name="business" required>
-                <input type="text" placeholder="Category, e.g: Retail, Tech" name="category" required>
-                <input type="text" placeholder="Bio/Description" name="bio" required>
-                <div class="select-wrapper">
-                    <select name="location" required>
-                        <option value="" disabled selected>Location</option>
-                        <option value="Riyadh">Riyadh</option>
-                        <option value="Jeddah">Jeddah</option>
-                        <option value="Mecca">Mecca</option>
-                        <option value="Dammam">Dammam</option>
-                        <option value="Khobar">Khobar</option>
-                        <option value="Medina">Medina</option>
-                        <option value="Tabuk">Tabuk</option>
-                        <option value="Abha">Abha</option>
-                    </select>
+
+                <!-- Step 2 -->
+                <div class="step2">
+                    <h1>Create Account</h1>
+                    <div class="social-icons">
+                        <a href="https://www.instagram.com" class="icon"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://www.facebook.com" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://twitter.com" class="icon"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="https://www.linkedin.com" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                    <span>Almost there! now your business details.</span>
+                    <input type="text" placeholder="Business Name" name="business" required>
+                    <input type="text" placeholder="Category, e.g: Retail, Tech" name="category" required>
+                    <input type="text" placeholder="Bio/Description" name="bio" required>
+                    <input type="text" placeholder="Location" name="location" required>
+                    <input type="file" placeholder="Your business logo" name="file" required>
+                    <button type="button" id="prevStep">Previous</button>
+                    <button type="submit">Sign Up</button>
                 </div>
-                <button type="submit">Sign Up</button>
             </form>
         </div>
         <div class="form-container sign-in">
@@ -89,6 +96,22 @@
 
         loginBtn.addEventListener('click', () => {
             container.classList.remove("active");
+        });
+
+        // Multi-step form logic
+        const nextStepBtn = document.getElementById('nextStep');
+        const prevStepBtn = document.getElementById('prevStep');
+        const step1 = document.querySelector('.step1');
+        const step2 = document.querySelector('.step2');
+
+        nextStepBtn.addEventListener('click', () => {
+            step1.style.display = 'none'; // Hide step 1
+            step2.style.display = 'block'; // Show step 2
+        });
+
+        prevStepBtn.addEventListener('click', () => {
+            step2.style.display = 'none'; // Hide step 2
+            step1.style.display = 'block'; // Show step 1
         });
     </script>
 </body>

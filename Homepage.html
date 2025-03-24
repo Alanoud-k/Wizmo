@@ -29,50 +29,85 @@
             </symbol>
           </svg>
           <script>
-            // Fetch and display products
-            async function fetchProducts() {
-                try {
-                    const response = await fetch('php4wizmo/getProducts.php'); // Call the PHP endpoint
-                    const products = await response.json(); // Parse the JSON response
-        
-                    const productListContainer = document.querySelector('.product-list-container');
-                    if (productListContainer) {
-                        // Clear existing products
-                        productListContainer.innerHTML = '<h2>My products</h2>';
-        
-                        // Add each product to the list
-                        products.forEach(product => {
-                            const productCard = `
-                                <div class="product-card">
-                                    <img src="${product.image}" alt="${product.productName}">
-                                    <div class="details">
-                                        <h4>${product.productName}</h4>
-                                        <p>${product.description}</p>
-                                    </div>
-                                    <div class="price-quantity">
-                                        <p>Price: $${product.price}</p>
-                                        <p>In Stock: ${product.quantity}</p>
-                                    </div>
+        // Function to fetch and display the logged-in username
+        async function fetchUsername() {
+            try {
+                // Fetch the username from the PHP script
+                const response = await fetch('php4wizmo/getUsername.php');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                // Parse the JSON response
+                const data = await response.json();
+
+                // Display the username in the sidebar
+                const usernameElement = document.getElementById('loggedInUsername');
+                if (usernameElement && data.username) {
+                    usernameElement.textContent = data.username;
+                }
+            } catch (error) {
+                console.error('Error fetching username:', error);
+            }
+        }
+
+        // Function to fetch and display products
+        async function fetchProducts() {
+            try {
+                // Fetch products from the PHP script
+                const response = await fetch('php4wizmo/getProducts.php');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                // Parse the JSON response
+                const products = await response.json();
+
+                // Get the product list container
+                const productListContainer = document.querySelector('.product-list-container');
+                if (productListContainer) {
+                    // Clear existing products
+                    productListContainer.innerHTML = '<h2>My Products</h2>';
+
+                    // Add each product to the list
+                    products.forEach(product => {
+                        const productCard = `
+                            <div class="product-card">
+                                <img src="${product.image}" alt="${product.productName}">
+                                <div class="details">
+                                    <h4>${product.productName}</h4>
+                                    <p>${product.description}</p>
                                 </div>
-                            `;
-                            productListContainer.innerHTML += productCard;
-                        });
-        
-                        // Add "More" link and button
-                        productListContainer.innerHTML += `
-                            <a href="Products.html" class="more-link"><h4>More..</h4></a>
-                            <a href="Products.html"><button class="products-button">Products Page</button></a>
+                                <div class="price-quantity">
+                                    <p>Price: ${product.price}</p>
+                                    <p>In Stock: ${product.quantity}</p>
+                                </div>
+                            </div>
                         `;
-                    }
-                } catch (error) {
-                    console.error('Error fetching products:', error);
+                        productListContainer.innerHTML += productCard;
+                    });
+
+                    // Add "More" link and button
+                    productListContainer.innerHTML += `
+                        <a href="Products.html" class="more-link"><h4>More..</h4></a>
+                        <a href="Products.html"><button class="products-button">Products Page</button></a>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                const productListContainer = document.querySelector('.product-list-container');
+                if (productListContainer) {
+                    productListContainer.innerHTML = '<h2>Error loading products. Please try again later.</h2>';
                 }
             }
-        
-            // Run the function when the page loads
-            window.onload = fetchProducts;
-            
-        </script>
+        }
+
+        // Run the functions when the page loads
+        window.onload = function () {
+            fetchUsername(); // Fetch and display the username
+            fetchProducts(); // Fetch and display the products
+        };
+    </script>
 </head>
 <body>
     <header>
@@ -108,7 +143,7 @@
       <aside class="home-sidebar">
         <div class="sidebar-box">
             <i class="fas fa-user sidebar-icon"></i>
-            <h3>Hello there!</h3>
+            <h3>Hello <span id="loggedInUsername"></span>!</h3>
             <a href="profile.html"><button class="sidebar-button">Edit Profile</button></a>
         </div>
         <div class="sidebar-box">

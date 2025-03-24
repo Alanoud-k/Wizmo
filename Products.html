@@ -423,7 +423,7 @@
     <nav class="navBar">
         <ul>
             <li class="link1"><a href="aboutus.html">About us</a></li>
-            <li class="link2"><a href="Products.html">Products warehouse</a></li>
+            <li class="link2"><a href="Products.html" class="active">Products warehouse</a></li>
             <li class="link3"><a href="deals.html">Distributions deals</a></li>
             <li class="link4"><a href="community.html">Community</a></li>
             <li class="link5"><a href="request.html">Request</a></li>
@@ -452,7 +452,7 @@
             <div class="form-description">
                 Fill out the form below to add a new product to your inventory. Upload a clear image of the product, provide a name, specify the quantity in stock, and set the price. Products with less than 10 items will be marked as "Low Stock".
             </div>
-            <form id="addProductForm">
+            <form id="addProductForm" enctype="multipart/form-data">
                 <div class="image-preview-container">
                     <div class="image-preview" id="imagePreview">
                         <div class="image-placeholder">Click to select image</div>
@@ -755,6 +755,9 @@ window.onload = function() {
         createProductCard(product.image, product.name, product.quantity, product.price, product.description);
     });
 };
+
+
+
     </script>
 
     <!-- Footer -->

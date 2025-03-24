@@ -41,6 +41,7 @@ body{
 
 .container span{
     font-size: 12px;
+    text-align: center;
 }
 
 .container a{
@@ -284,4 +285,14 @@ body{
 
 .container.active .toggle-right{
     transform: translateX(200%);
+}
+
+/* Add this CSS to hide the second step initially */
+.step2 {
+    display: none;
+    text-align: center;
+}
+
+.step1 {
+    text-align: center;
 }
