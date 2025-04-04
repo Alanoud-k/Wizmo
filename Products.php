@@ -607,13 +607,13 @@ if ($loggedInUser) {
 
             <!-- Link images aligned to the right -->
             <div class="header-links">
-                <a href="profile.html"><svg class="header-icon">
+                <a href="profile.php"><svg class="header-icon">
                         <use href="#account" />
                     </svg></a>
-                <a href="HomePage.html"><svg class="header-icon">
+                <a href="HomePage.php"><svg class="header-icon">
                         <use href="#home" />
                     </svg></a>
-                <a href="signup.html"><svg class="header-icon">
+                <a href="signup.php"><svg class="header-icon">
                         <use href="#logout" />
                     </svg></a>
             </div>
@@ -623,11 +623,11 @@ if ($loggedInUser) {
     <!-- Navigation bar -->
     <nav class="navBar">
         <ul>
-            <li class="link1"><a href="aboutus.html">About us</a></li>
+            <li class="link1"><a href="aboutus.php">About us</a></li>
             <li class="link2"><a href="Products.php" class="active">Products warehouse</a></li>
-            <li class="link3"><a href="deals.html">Distributions deals</a></li>
-            <li class="link4"><a href="community.html">Community</a></li>
-            <li class="link5"><a href="request.html">Request</a></li>
+            <li class="link3"><a href="deals.php">Distributions deals</a></li>
+            <li class="link4"><a href="community.php">Community</a></li>
+            <li class="link5"><a href="request.php">Request</a></li>
         </ul>
     </nav>
 
