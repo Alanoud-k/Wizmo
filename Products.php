@@ -152,10 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"]) && $_POST["a
 session_start();
 $loggedInUser = isset($_SESSION['username']) ? $_SESSION['username'] : null;
 
-// For demo purposes, you can comment out this condition or set a demo username
-if (!$loggedInUser) {
-    $loggedInUser = "rahaf5"; // Demo user - remove in production
-}
+
 
 $products = [];
 if ($loggedInUser) {
