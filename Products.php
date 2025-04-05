@@ -154,6 +154,8 @@ $loggedInUser = isset($_SESSION['username']) ? $_SESSION['username'] : null;
 
 
 
+
+
 $products = [];
 if ($loggedInUser) {
     $sql = "SELECT * FROM Product WHERE username = ?";
