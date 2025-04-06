@@ -39,9 +39,9 @@
 
             <!-- Link images aligned to the right -->
             <div class="header-links">
-                <a href="profile.html"><svg class="header-icon"><use href="#account"/></svg></a>
-                <a href="HomePage.html"><svg class="header-icon"><use href="#home"/></svg></a>
-                <a href="login-signup.html"><svg class="header-icon"><use href="#logout"/></svg></a>
+                <a href="profile.php"><svg class="header-icon"><use href="#account"/></svg></a>
+                <a href="HomePage.php"><svg class="header-icon"><use href="#home"/></svg></a>
+                <a href="login-signup.php"><svg class="header-icon"><use href="#logout"/></svg></a>
             </div>
         </div>
     </header>
@@ -49,11 +49,11 @@
     <!-- Navigation bar -->
     <nav class="navBar">
         <ul>
-            <li class="link1"><a href="aboutus.html" class="active">About us</a></li>
-            <li class="link2"><a href="Products.html">Products warehouse</a></li>
-            <li class="link3"><a href="deals.html">Distributions deals</a></li>
-            <li class="link4"><a href="community.html">Community</a></li>
-            <li class="link5"><a href="request.html">Requests</a></li>
+            <li class="link1"><a href="aboutus.php" class="active">About us</a></li>
+            <li class="link2"><a href="Products.php">Products warehouse</a></li>
+            <li class="link3"><a href="deals.php">Distributions deals</a></li>
+            <li class="link4"><a href="community.php">Community</a></li>
+            <li class="link5"><a href="request.php">Requests</a></li>
 
         </ul>
         
@@ -118,12 +118,12 @@
             <div class="footer-section">
                 <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="HomePage.html">Home</a></li>
-                    <li><a href="aboutus.html">About Us</a></li>
-                    <li><a href="Products.html">Products</a></li>
-                    <li><a href="deals.html">Deals</a></li>
-                    <li><a href="community.html">Community</a></li>
-                    <li><a href="request.html">Requests</a></li>
+                    <li><a href="HomePage.php">Home</a></li>
+                    <li><a href="aboutus.php">About Us</a></li>
+                    <li><a href="Products.php">Products</a></li>
+                    <li><a href="deals.php">Deals</a></li>
+                    <li><a href="community.php">Community</a></li>
+                    <li><a href="request.php">Requests</a></li>
                 </ul>
             </div>
             <div class="footer-section">
