@@ -1,3 +1,16 @@
+
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header('Location: index.php');
+    exit();
+}
+
+$connection = new mysqli("localhost", "root", "root", "Wizmo"); // Update credentials if needed
+if ($connection->connect_error) {
+    die("Connection failed: " . $connection->connect_error);
+}
+?>
 <!DOCTYPE html>
 <!--
 To change this license header, choose License Headers in Project Properties.
@@ -73,93 +86,56 @@ and open the template in the editor.
         <div class="filters">
             <select class="filter-select" id="categoryFilter">
                 <option value="">Filter by Category</option>
-                <option value="Fabric">Fabric</option>
-                <option value="Flowers">Flowers</option>
-                <option value="leather">Leather</option>
-                <option value="Bags Manufacturing">Bags Manufacturing</option>
-                <option value="Metals">Metals</option>
-                <option value="Wood">Wood</option>
-                <option value="Packaging Materials">Packaging Materials</option>
+                <?php
+                $categoryQuery = "SELECT MIN(category) as category FROM Business GROUP BY LOWER(category) ORDER BY category ASC";
+
+                $categoryResult = $connection->query($categoryQuery);
+                while ($row = $categoryResult->fetch_assoc()) {
+                    $category = htmlspecialchars($row['category']);
+                    echo "<option value=\"$category\">$category</option>";
+                }
+                ?>
             </select>
+
             <select class="filter-select" id="cityFilter">
                 <option value="">Filter by City</option>
-                <option value="Riyadh">Riyadh</option>
-                <option value="Jeddah">Jeddah</option>
-                <option value="Mecca">Mecca</option>
-                <option value="Dammam">Dammam</option>
-                <option value="Khobar">Khobar</option>
-                <option value="Medina">Medina</option>
-                <option value="Tabuk">Tabuk</option>
-                <option value="Abha">Abha</option>
+                <?php
+                $cityQuery = "SELECT MIN(city) as city FROM Business GROUP BY LOWER(city) ORDER BY city ASC";
+
+                $cityResult = $connection->query($cityQuery);
+                while ($row = $cityResult->fetch_assoc()) {
+                    $city = htmlspecialchars($row['city']);
+                    echo "<option value=\"$city\">$city</option>";
+                }
+                ?>
             </select>
+
         </div>
 
         <div class="business-list" id="businessList">
+            <?php
+            $query = "SELECT * FROM Business";
+            $result = $connection->query($query);
 
-            <div class="business-card" data-category="Fabric" data-city="Riyadh">
-                <img src="images/fabric.jpg" alt="Fabric World Logo" class="business-logo">
-                <div class="business-name">Fabric World</div>
-                <div class="business-category">Fabric</div>
-                <div class="business-location">Riyadh</div>
-                <p>Leading supplier of premium fabrics for various industries.</p>
-                <button class="request-button">Request a Deal</button>
-            </div>
-
-            <div class="business-card" data-category="Flowers" data-city="Jeddah">
-                <img src="images/flowers.webp" alt="Flower Power Logo" class="business-logo">
-                <div class="business-name">Flower Power</div>
-                <div class="business-category">Flowers</div>
-                <div class="business-location">Jeddah</div>
-                <p>A wide range of flowers for events, retail, and wholesale.</p>
-                <button class="request-button">Request a Deal</button>
-            </div>
-
-            <div class="business-card" data-category="leather" data-city="Dammam">
-                <img src="images/leather.webp" alt="Leather goods store" class="business-logo">
-                <div class="business-name">Leather goods</div>
-                <div class="business-category">Leather</div>
-                <div class="business-location">Dammam</div>
-                <p>A company providing the finest leather goods.</p>
-                <button class="request-button">Request a Deal</button>
-            </div>
-
-            <div class="business-card" data-category="Bags Manufacturing" data-city="Khobar">
-                <img src="images/bags.webp" alt="Bag Masters Logo" class="business-logo">
-                <div class="business-name">Bag Masters</div>
-                <div class="business-category">Bags Manufacturing</div>
-                <div class="business-location">Khobar</div>
-                <p>Experts in manufacturing high-quality bags for retailers.</p>
-                <button class="request-button">Request a Deal</button>
-            </div>
-
-            <div class="business-card" data-category="Metals" data-city="Mecca">
-                <img src="images/metals.avif" alt="Metal Works Logo" class="business-logo">
-                <div class="business-name">Metal Works</div>
-                <div class="business-category">Metals</div>
-                <div class="business-location">Mecca</div>
-                <p>Supplier of raw metals for construction and manufacturing.</p>
-                <button class="request-button">Request a Deal</button>
-            </div>
-
-            <div class="business-card" data-category="Wood" data-city="Medina">
-                <img src="images/wood.webp" alt="Wood & Co. Logo" class="business-logo">
-                <div class="business-name">Wood & Co.</div>
-                <div class="business-category">Wood</div>
-                <div class="business-location">Medina</div>
-                <p>Providing premium wood products for the construction industry.</p>
-                <button class="request-button">Request a Deal</button>
-            </div>
-
-            <div class="business-card" data-category="Packaging Materials" data-city="Tabuk">
-                <img src="images/packaging.webp" alt="Packaging Experts Logo" class="business-logo">
-                <div class="business-name">Packaging Experts</div>
-                <div class="business-category">Packaging Materials</div>
-                <div class="business-location">Tabuk</div>
-                <p>High-quality packaging materials for various industries.</p>
-                <button class="request-button">Request a Deal</button>
-            </div>
-
+            while ($row = $result->fetch_assoc()) {
+                $category = htmlspecialchars($row['category']);
+                $city = htmlspecialchars($row['city']);
+                $businessName = htmlspecialchars($row['businessName']);
+                $description = htmlspecialchars($row['description']);
+                $logo = htmlspecialchars($row['logo']);
+                echo "
+                <div class='business-card' data-category='$category' data-city='$city'>
+                    <img src='$logo' alt='$businessName Logo' class='business-logo'>
+                    <div class='business-name'>$businessName</div>
+                    <div class='business-category'>$category</div>
+                    <div class='business-location'>$city</div>
+                    <p>$description</p>
+                    <button class='request-button'>Request a Deal</button>
+                </div>";
+            }
+            ?>
         </div>
+
     </div>
     <div id="requestModal" class="modal">
         <div class="modal-content">
@@ -184,24 +160,8 @@ and open the template in the editor.
     </div>
 
     <script>
-        function filterBusinesses() {
-            const category = document.getElementById('categoryFilter').value.toLowerCase();
-            const city = document.getElementById('cityFilter').value.toLowerCase();
-            const businessCards = document.querySelectorAll('.business-card');
 
-            businessCards.forEach(card => {
-                const cardCategory = card.getAttribute('data-category').toLowerCase();
-                const cardCity = card.getAttribute('data-city').toLowerCase();
-                const categoryMatch = category ? cardCategory.includes(category) : true;
-                const cityMatch = city ? cardCity.includes(city) : true;
-
-                if (categoryMatch && cityMatch) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
+        
 
         document.getElementById('categoryFilter').addEventListener('change', filterBusinesses);
         document.getElementById('cityFilter').addEventListener('change', filterBusinesses);
@@ -230,7 +190,20 @@ and open the template in the editor.
 
             e.target.reset();
         });
+function filterBusinesses() {
+    const category = document.getElementById('categoryFilter').value;
+    const city = document.getElementById('cityFilter').value;
 
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `fetchBusinesses.php?category=${encodeURIComponent(category)}&city=${encodeURIComponent(city)}`, true);
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            document.getElementById('businessList').innerHTML = xhr.responseText;
+            addRequestButtonListeners(); 
+        }
+    };
+    xhr.send();
+}
     </script>
 <footer>
         <div class="footer-container">
@@ -265,4 +238,3 @@ and open the template in the editor.
     </footer>
     </body>
 </html>
-
