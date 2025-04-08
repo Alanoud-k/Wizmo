@@ -20,6 +20,8 @@ if (!isset($_SESSION['username'])) {
 }
 
 $current_username = $_SESSION['username'];
+$error_message = "";
+$success_message = "";
 
 // Handle form submission for adding a new deal
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['addDeal'])) {
@@ -29,31 +31,76 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['addDeal'])) {
     $date = $_POST['date'];
     $username = $current_username;
 
-    $sql = "INSERT INTO Deal (distributorName, productName, username, quantity, date) 
-            VALUES (?, ?, ?, ?, ?)";
+    // Start transaction to ensure data consistency
+    $conn->begin_transaction();
     
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssss", $distributorName, $productName, $username, $quantity, $date);
-    
-    if ($stmt->execute()) {
-        // Success message or redirect
-        header("Location: deals.php?success=1");
-        exit();
-    } else {
-        $error_message = "Error: " . $stmt->error;
+    try {
+        // Check if product exists and has enough quantity
+        $check_sql = "SELECT quantity FROM Product WHERE productName = ? AND username = ?";
+        $check_stmt = $conn->prepare($check_sql);
+        $check_stmt->bind_param("ss", $productName, $username);
+        $check_stmt->execute();
+        $check_result = $check_stmt->get_result();
+        
+        if ($check_result->num_rows === 0) {
+            throw new Exception("Product not found or does not belong to you.");
+        }
+        
+        $product_data = $check_result->fetch_assoc();
+        $current_quantity = $product_data['quantity'];
+        
+        // Extract numeric value from quantity (removing "m", "pcs", etc.)
+        $current_quantity_value = preg_replace('/[^0-9.]/', '', $current_quantity);
+        $requested_quantity_value = preg_replace('/[^0-9.]/', '', $quantity);
+        
+        // Get the unit of measurement, if any (e.g., "m", "pcs")
+        preg_match('/[a-zA-Z]+/', $current_quantity, $unit_matches);
+        $unit = !empty($unit_matches) ? $unit_matches[0] : '';
+        
+        // Compare quantities
+        if (floatval($requested_quantity_value) > floatval($current_quantity_value)) {
+            throw new Exception("Not enough quantity available. Available: {$current_quantity}");
+        }
+        
+        // Calculate new quantity
+        $new_quantity_value = floatval($current_quantity_value) - floatval($requested_quantity_value);
+        $new_quantity = $new_quantity_value . $unit;
+        
+        // Update product quantity
+        $update_sql = "UPDATE Product SET quantity = ? WHERE productName = ? AND username = ?";
+        $update_stmt = $conn->prepare($update_sql);
+        $update_stmt->bind_param("sss", $new_quantity, $productName, $username);
+        $update_stmt->execute();
+        
+        // Insert new deal
+        $insert_sql = "INSERT INTO Deal (distributorName, productName, username, quantity, date) 
+                       VALUES (?, ?, ?, ?, ?)";
+        $insert_stmt = $conn->prepare($insert_sql);
+        $insert_stmt->bind_param("sssss", $distributorName, $productName, $username, $quantity, $date);
+        $insert_stmt->execute();
+        
+        // Commit transaction
+        $conn->commit();
+        $success_message = "Deal has been successfully added and product quantity updated!";
+        
+    } catch (Exception $e) {
+        // Rollback transaction on error
+        $conn->rollback();
+        $error_message = "Error: " . $e->getMessage();
     }
-    $stmt->close();
 }
 
 // Fetch all deals for the current user
-$sql = "SELECT * FROM Deal WHERE username = ?";
+$sql = "SELECT d.*, p.image FROM Deal d 
+        LEFT JOIN Product p ON d.productName = p.productName 
+        WHERE d.username = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $current_username);
 $stmt->execute();
 $result = $stmt->get_result();
 
 // Fetch all products for the current user (for dropdown)
-$products_sql = "SELECT productName FROM Product WHERE username = ?";
+$products_sql = "SELECT productName, quantity FROM Product WHERE username = ?";
 $products_stmt = $conn->prepare($products_sql);
 $products_stmt->bind_param("s", $current_username);
 $products_stmt->execute();
@@ -61,7 +108,7 @@ $products_result = $products_stmt->get_result();
 
 $products = array();
 while ($product_row = $products_result->fetch_assoc()) {
-    $products[] = $product_row['productName'];
+    $products[] = $product_row;
 }
 ?>
 <!DOCTYPE html>
@@ -222,6 +269,40 @@ while ($product_row = $products_result->fetch_assoc()) {
             border: 1px solid transparent;
             border-radius: 4px;
         }
+        
+        .error-message {
+            background-color: #f2dede;
+            border-color: #ebccd1;
+            color: #a94442;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        
+        .product-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .quantity-info {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        #quantityHelp {
+            font-size: 14px;
+            color: #31708f;
+            background-color: #d9edf7;
+            border: 1px solid #bce8f1;
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 5px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -236,8 +317,8 @@ while ($product_row = $products_result->fetch_assoc()) {
             <!-- Link images aligned to the right -->
             <div class="header-links">
                 <a href="profile.html"><svg class="header-icon"><use href="#account"/></svg></a>
-                <a href="HomePage.php"><svg class="header-icon"><use href="#home"/></svg></a>
-                <a href="login-signup.php"><svg class="header-icon"><use href="#logout"/></svg></a>
+                <a href="HomePage.html"><svg class="header-icon"><use href="#home"/></svg></a>
+                <a href="login-signup.html"><svg class="header-icon"><use href="#logout"/></svg></a>
             </div>
         </div>
     </header>
@@ -245,8 +326,8 @@ while ($product_row = $products_result->fetch_assoc()) {
     <!-- Navigation bar -->
     <nav class="navBar">
         <ul>
-            <li class="link1"><a href="aboutus.php">About us</a></li>
-            <li class="link2"><a href="Products.php">Products warehouse</a></li>
+            <li class="link1"><a href="aboutus.html">About us</a></li>
+            <li class="link2"><a href="Products.html">Products warehouse</a></li>
             <li class="link3"><a href="deals.php" class="active">Distributions deals</a></li>
             <li class="link4"><a href="community.html">Community</a></li>
             <li class="link5"><a href="request.html">Requests</a></li>
@@ -254,9 +335,15 @@ while ($product_row = $products_result->fetch_assoc()) {
     </nav>
 
     <br>
-    <?php if(isset($_GET['success']) && $_GET['success'] == 1): ?>
+    <?php if(!empty($success_message)): ?>
         <div class="success-message">
-            Deal has been successfully added!
+            <?php echo $success_message; ?>
+        </div>
+    <?php endif; ?>
+    
+    <?php if(!empty($error_message)): ?>
+        <div class="error-message">
+            <?php echo $error_message; ?>
         </div>
     <?php endif; ?>
 
@@ -265,7 +352,8 @@ while ($product_row = $products_result->fetch_assoc()) {
     <ul id="dealsList">
         <?php while($row = $result->fetch_assoc()): ?>
             <li class="deal-item">
-                <!-- You can add image handling here if you have product images -->
+                <img src="<?php echo !empty($row['image']) ? htmlspecialchars($row['image']) : 'images/placeholder.png'; ?>" 
+                     alt="Product" class="product-img">
                 <span><?php echo htmlspecialchars($row['productName']); ?> - 
                       <?php echo htmlspecialchars($row['quantity']); ?> - 
                       <?php echo htmlspecialchars($row['date']); ?> - 
@@ -287,16 +375,24 @@ while ($product_row = $products_result->fetch_assoc()) {
             <h2 id="popupTitle">Add New Deal</h2>
 
             <form id="addDealForm" method="POST" action="deals.php"> 
-                <select id="productName" name="productName" required>
+                <select id="productName" name="productName" required onchange="updateQuantityInfo()">
                     <option value="">Select a product</option>
                     <?php foreach($products as $product): ?>
-                        <option value="<?php echo htmlspecialchars($product); ?>">
-                            <?php echo htmlspecialchars($product); ?>
+                        <option value="<?php echo htmlspecialchars($product['productName']); ?>" 
+                                data-quantity="<?php echo htmlspecialchars($product['quantity']); ?>">
+                            <?php echo htmlspecialchars($product['productName']); ?> 
+                            (Available: <?php echo htmlspecialchars($product['quantity']); ?>)
                         </option>
                     <?php endforeach; ?>
                 </select>
+                
                 <input type="text" id="distributorName" name="distributorName" placeholder="Distributor Name" required>
-                <input type="text" id="quantity" name="quantity" placeholder="Quantity" required>
+                
+                <div>
+                    <input type="text" id="quantity" name="quantity" placeholder="Quantity" required>
+                    <div id="quantityHelp"></div>
+                </div>
+                
                 <input type="date" id="date" name="date" required>
                 <!-- Hidden input to identify form submission -->
                 <input type="hidden" name="addDeal" value="1">
@@ -314,7 +410,50 @@ while ($product_row = $products_result->fetch_assoc()) {
         function closePopup() {
             document.getElementById('popupForm').style.display = 'none';
             document.getElementById('addDealForm').reset();
+            document.getElementById('quantityHelp').style.display = 'none';
         }
+
+        function updateQuantityInfo() {
+            const productSelect = document.getElementById('productName');
+            const quantityInput = document.getElementById('quantity');
+            const quantityHelp = document.getElementById('quantityHelp');
+            
+            if (productSelect.selectedIndex > 0) {
+                const selectedOption = productSelect.options[productSelect.selectedIndex];
+                const availableQuantity = selectedOption.getAttribute('data-quantity');
+                
+                quantityHelp.textContent = `Available quantity: ${availableQuantity}`;
+                quantityHelp.style.display = 'block';
+                
+                // Extract only the numeric part of quantity for validation
+                const numericQuantity = availableQuantity.replace(/[^0-9.]/g, '');
+                const unit = availableQuantity.replace(/[0-9.]/g, '').trim();
+                
+                // Set a placeholder showing the expected format
+                quantityInput.placeholder = `Quantity (max: ${availableQuantity})`;
+                
+                // Add a data attribute for validation
+                quantityInput.setAttribute('data-max', numericQuantity);
+                quantityInput.setAttribute('data-unit', unit);
+            } else {
+                quantityHelp.style.display = 'none';
+                quantityInput.placeholder = 'Quantity';
+            }
+        }
+
+        // Validate the form before submission
+        document.getElementById('addDealForm').addEventListener('submit', function(event) {
+            const quantityInput = document.getElementById('quantity');
+            const maxQuantity = parseFloat(quantityInput.getAttribute('data-max'));
+            
+            // Extract numeric value from input
+            const inputValue = quantityInput.value.replace(/[^0-9.]/g, '');
+            
+            if (parseFloat(inputValue) > maxQuantity) {
+                event.preventDefault();
+                alert(`Quantity exceeds available amount. Maximum available: ${maxQuantity}`);
+            }
+        });
 
         // Close the popup when clicking outside of it
         window.onclick = function(event) {
@@ -331,11 +470,11 @@ while ($product_row = $products_result->fetch_assoc()) {
             <div class="footer-section">
                 <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="HomePage.php">Home</a></li>
-                    <li><a href="aboutus.php">About Us</a></li>
-                    <li><a href="Products.php">Products</a></li>
+                    <li><a href="HomePage.html">Home</a></li>
+                    <li><a href="aboutus.html">About Us</a></li>
+                    <li><a href="Products.html">Products</a></li>
                     <li><a href="deals.php">Deals</a></li>
-                    <li><a href="community.php">Community</a></li>
+                    <li><a href="community.html">Community</a></li>
                     <li><a href="request.html">Requests</a></li>
                 </ul>
             </div>
