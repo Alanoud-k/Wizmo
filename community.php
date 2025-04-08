@@ -65,18 +65,18 @@ and open the template in the editor.
 
             <div class="header-links">
                 <a href="profile.html"><svg class="header-icon"><use href="#account"/></svg></a>
-                <a href="HomePage.html"><svg class="header-icon"><use href="#home"/></svg></a>
-                <a href="login-signup.html"><svg class="header-icon"><use href="#logout"/></svg></a>
+                <a href="HomePage.php"><svg class="header-icon"><use href="#home"/></svg></a>
+                <a href="login-signup.php"><svg class="header-icon"><use href="#logout"/></svg></a>
             </div>
         </div>
     </header>
 
     <nav class="navBar">
         <ul>
-            <li class="link1"><a href="aboutus.html">About us</a></li>
-            <li class="link2"><a href="Products.html">Products warehouse</a></li>
-            <li class="link3"><a href="deals.html">Distributions deals</a></li>
-            <li class="link4"><a href="community.html" class="active">Community</a></li>
+            <li class="link1"><a href="aboutus.php">About us</a></li>
+            <li class="link2"><a href="Products.php">Products warehouse</a></li>
+            <li class="link3"><a href="deals.php">Distributions deals</a></li>
+            <li class="link4"><a href="community.php" class="active">Community</a></li>
             <li class="link5"><a href="request.html">Requests</a></li>
         </ul>
         
