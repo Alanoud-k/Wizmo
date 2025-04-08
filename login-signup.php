@@ -152,12 +152,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['email']) && !isset($_P
                     </div>
                     <span>Almost there! Now your business details.</span>
                     <input type="text" placeholder="Business Name" name="business" required>
-                    <input type="text" placeholder="Category, e.g: Retail, Tech" name="category" required>
-                    <input type="text" placeholder="Bio/Description" name="bio" required>
-                    <input type="text" placeholder="Location" name="location" required>
-                    <input type="file" placeholder="Your business logo" name="file" required>
-                    <button type="button" id="prevStep">Previous</button>
-                    <button type="submit">Sign Up</button>
+
+<!-- Dropdown for Business Category -->
+<label for="category">Business Category</label>
+<select name="category" id="category" required>
+  <option value="">-- Select Business Category --</option>
+  <option value="agriculture">Agriculture</option>
+  <option value="construction">Construction</option>
+  <option value="education">Education</option>
+  <option value="entertainment">Entertainment</option>
+  <option value="fashion">Fashion & Beauty</option>
+  <option value="food">Food & Beverage</option>
+  <option value="health">Health & Wellness</option>
+  <option value="logistics">Logistics & Delivery</option>
+  <option value="manufacturing">Manufacturing</option>
+  <option value="retail">Retail</option>
+  <option value="services">Professional Services</option>
+  <option value="tech">Technology</option>
+  <option value="tourism">Tourism & Hospitality</option>
+  <option value="other">other</option>
+
+</select>
+
+<input type="text" placeholder="Bio/Description" name="bio" required>
+
+<!-- Dropdown for City -->
+<label for="location">City</label>
+<select name="location" id="location" required>
+  <option value="">-- Select City --</option>
+  <option value="abha">Abha</option>
+  <option value="albahah">Al-Bahah</option>
+  <option value="alhasa">Al-Hasa</option>
+  <option value="alula">AlUla</option>
+  <option value="arara">Arar</option>
+  <option value="buraydah">Buraydah</option>
+  <option value="dammam">Dammam</option>
+  <option value="hail">Hail</option>
+  <option value="jazan">Jazan</option>
+  <option value="jeddah">Jeddah</option>
+  <option value="khobar">Khobar</option>
+  <option value="madinah">Madinah</option>
+  <option value="makkah">Makkah</option>
+  <option value="najran">Najran</option>
+  <option value="qurayyat">Al Qurayyat</option>
+  <option value="riyadh">Riyadh</option>
+  <option value="sakaka">Sakaka</option>
+  <option value="tabuk">Tabuk</option>
+  <option value="taif">Taif</option>
+  <option value="yanbu">Yanbu</option>
+</select>
+
+<input type="file" name="file" required>
+
+<button type="button" id="prevStep">Previous</button>
+<button type="submit">Sign Up</button>
                 </div>
             </form>
         </div>
