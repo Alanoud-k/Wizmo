@@ -10,7 +10,7 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
-$receiver = $_SESSION['username'];
+$currentUser = $_SESSION['username'];
 
 // Handle AJAX update for Accept/Decline
 if (
@@ -23,29 +23,51 @@ if (
     $newState = $action === 'accept' ? 'Accepted' : 'Declined';
 
     $stmt = $connection->prepare("UPDATE Request SET state = ? WHERE username = ? AND receiverUsername = ? AND message = ?");
-    $stmt->bind_param("ssss", $newState, $senderUsername, $receiver, $message);
+    $stmt->bind_param("ssss", $newState, $senderUsername, $currentUser, $message);
     $stmt->execute();
     echo 'success';
     exit();
 }
 
-$query = "SELECT r.message, r.username, r.state, b.businessName, b.logo, b.description 
+// Get requests received by the current user
+$receivedQuery = "SELECT r.message, r.username, r.state, b.businessName, b.logo, b.description, b.phoneNumber 
           FROM Request r 
           JOIN Business b ON r.username = b.username 
           WHERE r.receiverUsername = ?";
 
-$stmt = $connection->prepare($query);
-$stmt->bind_param("s", $receiver);
+$stmt = $connection->prepare($receivedQuery);
+$stmt->bind_param("s", $currentUser);
 $stmt->execute();
-$result = $stmt->get_result();
+$receivedResult = $stmt->get_result();
 
-$requests = [];
-$acceptedRequests = [];
-while ($row = $result->fetch_assoc()) {
+$pendingReceived = [];
+$acceptedReceived = [];
+while ($row = $receivedResult->fetch_assoc()) {
     if ($row['state'] === 'Accepted') {
-        $acceptedRequests[] = $row;
+        $acceptedReceived[] = $row;
     } elseif ($row['state'] === 'Pending') {
-        $requests[] = $row;
+        $pendingReceived[] = $row;
+    }
+}
+
+// Get requests sent by the current user
+$sentQuery = "SELECT r.message, r.receiverUsername, r.state, b.businessName, b.logo, b.description, b.phoneNumber 
+          FROM Request r 
+          JOIN Business b ON r.receiverUsername = b.username 
+          WHERE r.username = ?";
+
+$stmt = $connection->prepare($sentQuery);
+$stmt->bind_param("s", $currentUser);
+$stmt->execute();
+$sentResult = $stmt->get_result();
+
+$pendingSent = [];
+$acceptedSent = [];
+while ($row = $sentResult->fetch_assoc()) {
+    if ($row['state'] === 'Accepted') {
+        $acceptedSent[] = $row;
+    } elseif ($row['state'] === 'Pending') {
+        $pendingSent[] = $row;
     }
 }
 ?>
@@ -67,18 +89,17 @@ while ($row = $result->fetch_assoc()) {
         </symbol>
         <symbol id="linkedin" viewBox="0 0 24 24">
           <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.784 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-        </symbol></svg>
-        <svg style="display: none;">
-            <symbol id="home" viewBox="0 0 24 24">
-              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-            </symbol>
-            <symbol id="account" viewBox="0 0 24 24">
-              <path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3zm9 11v-1a7 7 0 0 0-7-7h-4a7 7 0 0 0-7 7v1h2v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1z"/>
-            </symbol>
-            <symbol id="logout" viewBox="0 0 24 24">
-              <path d="M16 17v-3h-5v-2h5V7l5 5-5 5zM14 2a2 2 0 0 1 2 2v2h-2V4H5v16h9v-2h2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9z"/>
-            </symbol>
-          </svg>
+        </symbol>
+        <symbol id="home" viewBox="0 0 24 24">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </symbol>
+        <symbol id="account" viewBox="0 0 24 24">
+          <path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3zm9 11v-1a7 7 0 0 0-7-7h-4a7 7 0 0 0-7 7v1h2v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1z"/>
+        </symbol>
+        <symbol id="logout" viewBox="0 0 24 24">
+          <path d="M16 17v-3h-5v-2h5V7l5 5-5 5zM14 2a2 2 0 0 1 2 2v2h-2V4H5v16h9v-2h2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9z"/>
+        </symbol>
+    </svg>
     <style>
         body {
             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
@@ -97,6 +118,11 @@ while ($row = $result->fetch_assoc()) {
             width: 50px;
             height: 50px;
             margin-right: 10px;
+        }
+        .phone-number {
+            font-weight: bold;
+            color: #1e3348;
+            margin-top: 5px;
         }
         button {
             background-color: #1e3348;
@@ -142,23 +168,26 @@ while ($row = $result->fetch_assoc()) {
             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
             margin: 20px;
         }
+        .section {
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
     <header>
-    <div class="header-container">
-        <img src="images/wizmoLOGO.png" alt="logo" width="90" height="80" class="Navimg">
-        <div class="text-container">
-            <h2>WIZMO</h2>
-            <h3>your smartest warehouse gizmo</h3>
-        </div>
-        <div class="header-links">
+        <div class="header-container">
+            <img src="images/wizmoLOGO.png" alt="logo" width="90" height="80" class="Navimg">
+            <div class="text-container">
+                <h2>WIZMO</h2>
+                <h3>your smartest warehouse gizmo</h3>
+            </div>
+            <div class="header-links">
                 <a href="profile.php"><svg class="header-icon"><use href="#account"/></svg></a>
                 <a href="Homepage.php"><svg class="header-icon"><use href="#home"/></svg></a>
                 <a href="index.php"><svg class="header-icon"><use href="#logout"/></svg></a>
             </div>
-    </div>
-</header>
+        </div>
+    </header>
 
     <nav class="navBar">
         <ul>
@@ -170,34 +199,80 @@ while ($row = $result->fetch_assoc()) {
         </ul>
     </nav>
 
-    <h2>Collaboration Requests</h2>
-    <div id="requests">
-        <?php foreach ($requests as $row): ?>
-            <div class="request" data-username="<?= htmlspecialchars($row['username']) ?>" data-message="<?= htmlspecialchars($row['message']) ?>">
-                <img src="<?= htmlspecialchars($row['logo']) ?>" alt="<?= htmlspecialchars($row['businessName']) ?>">
-                <div>
-                    <strong><?= htmlspecialchars($row['businessName']) ?></strong>
-                    <p><?= htmlspecialchars($row['description']) ?></p>
-                    <p><?= htmlspecialchars($row['message']) ?></p>
-                </div>
-                <button onclick="updateRequestState('accept', '<?= htmlspecialchars($row['username']) ?>', '<?= htmlspecialchars($row['message']) ?>')">Accept</button>
-                <button onclick="updateRequestState('decline', '<?= htmlspecialchars($row['username']) ?>', '<?= htmlspecialchars($row['message']) ?>')">Decline</button>
-            </div>
-        <?php endforeach; ?>
+    <div class="section">
+        <h2>Incoming Collaboration Requests</h2>
+        <div id="receivedRequests">
+            <?php if (empty($pendingReceived)): ?>
+                <p style="margin-left: 40px;">No pending requests.</p>
+            <?php else: ?>
+                <?php foreach ($pendingReceived as $row): ?>
+                    <div class="request" data-username="<?= htmlspecialchars($row['username']) ?>" data-message="<?= htmlspecialchars($row['message']) ?>">
+                        <img src="<?= htmlspecialchars($row['logo']) ?>" alt="<?= htmlspecialchars($row['businessName']) ?>">
+                        <div>
+                            <strong><?= htmlspecialchars($row['businessName']) ?></strong>
+                            <p><?= htmlspecialchars($row['description']) ?></p>
+                            <p><?= htmlspecialchars($row['message']) ?></p>
+                        </div>
+                        <button onclick="updateRequestState('accept', '<?= htmlspecialchars($row['username']) ?>', '<?= htmlspecialchars($row['message']) ?>')">Accept</button>
+                        <button onclick="updateRequestState('decline', '<?= htmlspecialchars($row['username']) ?>', '<?= htmlspecialchars($row['message']) ?>')">Decline</button>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
     </div>
 
-    <h2>Accepted Requests</h2>
-    <div id="acceptedRequests">
-        <?php foreach ($acceptedRequests as $row): ?>
-            <div class="accepted">
-                <img src="<?= htmlspecialchars($row['logo']) ?>" alt="<?= htmlspecialchars($row['businessName']) ?>">
-                <div>
-                    <strong><?= htmlspecialchars($row['businessName']) ?></strong>
-                    <p><?= htmlspecialchars($row['description']) ?></p>
-                    <p><?= htmlspecialchars($row['message']) ?></p>
-                </div>
-            </div>
-        <?php endforeach; ?>
+    <div class="section">
+        <h2>My Sent Requests</h2>
+        <div id="sentRequests">
+            <?php if (empty($pendingSent)): ?>
+                <p style="margin-left: 40px;">No pending sent requests.</p>
+            <?php else: ?>
+                <?php foreach ($pendingSent as $row): ?>
+                    <div class="request">
+                        <img src="<?= htmlspecialchars($row['logo']) ?>" alt="<?= htmlspecialchars($row['businessName']) ?>">
+                        <div>
+                            <strong><?= htmlspecialchars($row['businessName']) ?></strong>
+                            <p><?= htmlspecialchars($row['description']) ?></p>
+                            <p><?= htmlspecialchars($row['message']) ?></p>
+                            <p><em>Status: Pending</em></p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Accepted Partnerships</h2>
+        <div id="acceptedPartnerships">
+            <?php if (empty($acceptedReceived) && empty($acceptedSent)): ?>
+                <p style="margin-left: 40px;">No accepted partnerships yet.</p>
+            <?php else: ?>
+                <?php foreach ($acceptedReceived as $row): ?>
+                    <div class="accepted">
+                        <img src="<?= htmlspecialchars($row['logo']) ?>" alt="<?= htmlspecialchars($row['businessName']) ?>">
+                        <div>
+                            <strong><?= htmlspecialchars($row['businessName']) ?></strong>
+                            <p><?= htmlspecialchars($row['description']) ?></p>
+                            <p><?= htmlspecialchars($row['message']) ?></p>
+                            <p class="phone-number">Contact: <?= htmlspecialchars($row['phoneNumber']) ?></p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+                
+                <?php foreach ($acceptedSent as $row): ?>
+                    <div class="accepted">
+                        <img src="<?= htmlspecialchars($row['logo']) ?>" alt="<?= htmlspecialchars($row['businessName']) ?>">
+                        <div>
+                            <strong><?= htmlspecialchars($row['businessName']) ?></strong>
+                            <p><?= htmlspecialchars($row['description']) ?></p>
+                            <p><?= htmlspecialchars($row['message']) ?></p>
+                            <p class="phone-number">Contact: <?= htmlspecialchars($row['phoneNumber']) ?></p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
     </div>
 
     <script>
@@ -219,12 +294,12 @@ while ($row = $result->fetch_assoc()) {
             <div class="footer-section">
                 <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="HomePage.html">Home</a></li>
-                    <li><a href="aboutus.html">About Us</a></li>
-                    <li><a href="Products.html">Products</a></li>
-                    <li><a href="deals.html">Deals</a></li>
-                    <li><a href="community.html">Community</a></li>
-                    <li><a href="request.html" class="active">Requests</a></li>
+                    <li><a href="HomePage.php">Home</a></li>
+                    <li><a href="aboutus.php">About Us</a></li>
+                    <li><a href="Products.php">Products</a></li>
+                    <li><a href="deals.php">Deals</a></li>
+                    <li><a href="community.php">Community</a></li>
+                    <li><a href="request.php" class="active">Requests</a></li>
                 </ul>
             </div>
             <div class="footer-section">

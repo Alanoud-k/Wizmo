@@ -145,7 +145,7 @@ if ($connection->connect_error) {
         <form id="dealRequestForm">
             
             <textarea id="message" name="message" rows="12" placeholder="Enter your message to the business..." required></textarea>
-            <input type="hidden" id="receiverUsername" name="receiverUsername">
+            <input type="hidden" id="receiverUsername" name="receiverUsername" value="<?php ?>">
             <input type="hidden" id="senderUsername" name="senderUsername" value="<?php echo htmlspecialchars($_SESSION['username']); ?>">
             <button type="submit" class="submit-button">Submit</button>
         </form>
@@ -154,18 +154,21 @@ if ($connection->connect_error) {
 
 <script>
 function filterBusinesses() {
-    const category = document.getElementById('categoryFilter').value;
-    const city = document.getElementById('cityFilter').value;
-
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', `fetchBusinesses.php?category=${encodeURIComponent(category)}&city=${encodeURIComponent(city)}`, true);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            document.getElementById('businessList').innerHTML = xhr.responseText;
-            addRequestButtonListeners();
-        }
-    };
-    xhr.send();
+    const categorySelect = document.getElementById('categoryFilter');
+    const citySelect = document.getElementById('cityFilter');
+    
+    const category = categorySelect.value;
+    const city = citySelect.value;
+    
+    document.querySelectorAll('.business-card').forEach(card => {
+        const cardCategory = card.getAttribute('data-category');
+        const cardCity = card.getAttribute('data-city');
+        
+        const categoryMatch = category === '' || cardCategory.toLowerCase() === category.toLowerCase();
+        const cityMatch = city === '' || cardCity.toLowerCase() === city.toLowerCase();
+        
+        card.style.display = (categoryMatch && cityMatch) ? 'block' : 'none';
+    });
 }
 
 document.getElementById('categoryFilter').addEventListener('change', filterBusinesses);
@@ -185,6 +188,7 @@ addRequestButtonListeners();
 document.getElementById('dealRequestForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    
     fetch('submitRequest.php', {
         method: 'POST',
         body: formData
@@ -196,7 +200,7 @@ document.getElementById('dealRequestForm').addEventListener('submit', (e) => {
             document.getElementById('requestModal').style.display = 'none';
             e.target.reset();
         } else {
-            alert('Something went wrong while submitting your request.');
+            alert('Error: ' + result);
         }
     })
     .catch(error => {
