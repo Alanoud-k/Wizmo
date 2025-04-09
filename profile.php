@@ -55,7 +55,7 @@ $uploadedFileName = $logo;
 
 // Handle file upload
 if (isset($_FILES["upload-pic"]) && $_FILES["upload-pic"]["error"] == 0) {
-$uploadDir = "images/";
+$uploadDir = "uploads/";
 if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
 
 $filename = uniqid() . '_' . basename($_FILES["upload-pic"]["name"]);
@@ -164,19 +164,19 @@ $conn->close();
         <!-- Link images aligned to the right -->
         <div class="header-links">
             <a href="profile.php"><svg class="header-icon"><use href="#account"/></svg></a>
-            <a href="Homepage.html"><svg class="header-icon"><use href="#home"/></svg></a>
-            <a href="index.html"><svg class="header-icon"><use href="#logout"/></svg></a>
+            <a href="Homepage.php"><svg class="header-icon"><use href="#home"/></svg></a>
+            <a href="index.php"><svg class="header-icon"><use href="#logout"/></svg></a>
         </div>
     </div>
 </header>
 <!-- Navigation bar -->
 <nav class="navBar">
     <ul>
-        <li class="link1"><a href="aboutus.html">About us</a></li>
-        <li class="link2"><a href="Products.html">Products warehouse</a></li>
-        <li class="link3"><a href="deals.html">Distributions deals</a></li>
-        <li class="link4"><a href="Community.html">Community</a></li>
-        <li class="link5"><a href="request.html">Requests</a></li>
+        <li class="link1"><a href="aboutus.php">About us</a></li>
+        <li class="link2"><a href="Products.php">Products warehouse</a></li>
+        <li class="link3"><a href="deals.php">Distributions deals</a></li>
+        <li class="link4"><a href="Community.php">Community</a></li>
+        <li class="link5"><a href="request.php">Requests</a></li>
     </ul>
 
 </nav>
@@ -209,14 +209,22 @@ $conn->close();
             <label>Category:</label>
             <input type="text" name="category" value="<?= htmlspecialchars($category) ?>">
 
-            <label>Location:</label>
-            <select name="city">
-                <?php foreach (["Riyadh", "Jeddah", "Mecca", "Dammam", "Khobar", "Medina", "Tabuk", "Abha"] as $cityOption): ?>
-                <option value="<?= $cityOption ?>" <?= $cityOption === $city ? 'selected' : '' ?>>
-                <?= $cityOption ?>
-                </option>
-                <?php endforeach; ?>
-            </select>
+            <label for="location">City</label>
+                        <select name="location" id="location" required>
+                          <option value="">-- Select City --</option>
+                          <?php
+                          $cities = [
+                                  "Abha", "Al-Bahah", "Al-Hasa", "AlUla", "Arar", "Buraydah", "Dammam", "Hail", "Jazan", "Jeddah",
+                                 "Khobar", "Madinah", "Makkah", "Najran", "Al Qurayyat", "Riyadh", "Sakaka", "Tabuk", "Taif", "Yanbu"
+                                 ];
+                             foreach ($cities as $cityOption):
+                                 $value = strtolower(str_replace([' ', '-'], '', $cityOption)); // Format value to match second dropdown
+                               ?>
+                           <option value="<?= $value ?>" <?= $value === strtolower($location ?? '') ? 'selected' : '' ?>>
+                          <?= $cityOption ?>
+                           </option>
+                           <?php endforeach; ?>
+                        </select>
 
             <label>Email:</label>
             <input type="email" name="email" value="<?= htmlspecialchars($email) ?>">
@@ -232,7 +240,6 @@ $conn->close();
 
             <div class="buttons">
                 <button type="submit" class="save-btn">Save Changes</button>
-                <button type="button" class="cancel-btn" onclick="window.location.href='Homepage.html'">Cancel</button>
             </div>
         </form>
     </div>
@@ -243,12 +250,12 @@ $conn->close();
         <div class="footer-section">
             <h4>Quick Links</h4>
             <ul>
-                <li><a href="Homepage.html">Home</a></li>
-                <li><a href="aboutus.html">About Us</a></li>
-                <li><a href="Products.html">Products</a></li>
-                <li><a href="deals.html">Deals</a></li>
-                <li><a href="Community.html">Community</a></li>
-                <li><a href="request.html">Requests</a></li>
+                <li><a href="Homepage.php">Home</a></li>
+                <li><a href="aboutus.php">About Us</a></li>
+                <li><a href="Products.php">Products</a></li>
+                <li><a href="deals.php">Deals</a></li>
+                <li><a href="Community.php">Community</a></li>
+                <li><a href="request.php">Requests</a></li>
             </ul>
         </div>
         <div class="footer-section">
@@ -270,43 +277,6 @@ $conn->close();
     </div>
 </footer>
 
-<script>
-    document.getElementById("profile-form").addEventListener("submit", function(event) {
-        if (!confirm("Are you sure you want to save the changes?")) {
-            event.preventDefault();
-        }
-    });
 
-    document.querySelector(".cancel-btn").addEventListener("click", function() {
-        document.getElementById("profile-form").reset();
-        window.location.href = "Homepage.html";
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const profilePicInput = document.getElementById("upload-pic");
-        const profilePic = document.getElementById("profile-pic");
-        const passwordInput = document.getElementById("password");
-        const passwordToggle = document.createElement("span");
-
-        profilePicInput.addEventListener("change", function (event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function () {
-                    profilePic.src = reader.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        passwordToggle.innerText = "👁";
-        passwordToggle.style.cursor = "pointer";
-        passwordInput.parentNode.appendChild(passwordToggle);
-
-        passwordToggle.addEventListener("click", function () {
-            passwordInput.type = passwordInput.type === "password" ? "text" : "password";
-        });
-    });
-</script>
 </body>
 </html>
