@@ -14,8 +14,8 @@ if ($conn->connect_error) {
 
 // Ensure user is logged in
 if (!isset($_SESSION['username'])) {
-    // Redirect to login page or set default for testing
-    $_SESSION['username'] = "rahaf5"; // Replace with actual login system
+    header('Location: index.php');
+    exit();
 }
 
 $current_username = $_SESSION['username'];

@@ -4,9 +4,9 @@ $servername = "localhost";
 $username = "root"; 
 $password = "root";
 $dbname = "Wizmo";
-//$port = 8889;
+$port = 8889;
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -316,8 +316,8 @@ while ($product_row = $products_result->fetch_assoc()) {
 
             <!-- Link images aligned to the right -->
             <div class="header-links">
-                <a href="profile.html"><svg class="header-icon"><use href="#account"/></svg></a>
-                <a href="HomePage.php"><svg class="header-icon"><use href="#home"/></svg></a>
+                <a href="profile.php"><svg class="header-icon"><use href="#account"/></svg></a>
+                <a href="Homepage.php"><svg class="header-icon"><use href="#home"/></svg></a>
                 <a href="index.php"><svg class="header-icon"><use href="#logout"/></svg></a>
             </div>
         </div>
@@ -330,7 +330,7 @@ while ($product_row = $products_result->fetch_assoc()) {
             <li class="link2"><a href="Products.php">Products warehouse</a></li>
             <li class="link3"><a href="deals.php" class="active">Distributions deals</a></li>
             <li class="link4"><a href="community.php">Community</a></li>
-            <li class="link5"><a href="request.html">Requests</a></li>
+            <li class="link5"><a href="request.php">Requests</a></li>
         </ul>
     </nav>
 
