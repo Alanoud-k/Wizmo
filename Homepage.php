@@ -3,7 +3,7 @@ session_start(); // Start the session at the very beginning
 
 // Check if user is logged in, redirect if not
 if (!isset($_SESSION['username'])) {
-    header("Location: login-signup.php");
+    header("Location: index.php");
     exit();
 }
 
@@ -65,7 +65,7 @@ if ($conn->connect_error) {
             <div class="header-links">
                 <a href="profile.php"><svg class="header-icon"><use href="#account"/></svg></a>
                 <a href="HomePage.php"><svg class="header-icon"><use href="#home"/></svg></a>
-                <a href="login-signup.php"><svg class="header-icon"><use href="#logout"/></svg></a>
+                <a href="index.php"><svg class="header-icon"><use href="#logout"/></svg></a>
             </div>
         </div>
     </header>
