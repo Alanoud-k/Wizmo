@@ -4,10 +4,10 @@ $servername = "localhost";
 $username = "root";
 $password = "root"; // Assuming MAMP default password
 $dbname = "Wizmo";
-$port = 8889; // MAMP default port
+//$port = 8889; // MAMP default port
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname, $port);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
@@ -351,8 +351,8 @@ if ($loggedInUser) {
             color: white;
             text-decoration: none;
             padding: 12px 24px;
-            margin: 20px;
-            display: inline-block;
+            margin: 20px auto;
+            display: block;
             position: relative;
             border-radius: 30px;
             transition: all 0.3s ease;
@@ -401,6 +401,7 @@ if ($loggedInUser) {
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            
         }
 
         .popup-content {
@@ -410,6 +411,10 @@ if ($loggedInUser) {
             width: 90%;
             max-width: 500px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            
+  max-height: 90vh; /* Limits height to 90% of viewport */
+  overflow-y: auto; /* Enables scrolling if content exceeds height */
+
         }
 
         .popup h2 {
@@ -598,7 +603,7 @@ if ($loggedInUser) {
 <body>
     <header>
         <div class="header-container">
-            <img src="wizmoLOGO.png" alt="logo" width="90" height="80" class="Navimg">
+            <img src="images/wizmoLOGO.png" alt="logo" width="90" height="80" class="Navimg">
             <div class="text-container">
                 <h2>WIZMO</h2>
                 <h3>your smartest warehouse gizmo</h3>

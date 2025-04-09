@@ -51,6 +51,126 @@ if ($conn->connect_error) {
               <path d="M16 17v-3h-5v-2h5V7l5 5-5 5zM14 2a2 2 0 0 1 2 2v2h-2V4H5v16h9v-2h2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9z"/>
             </symbol>
           </svg>
+    <style>
+        /* New stock level bar styles */
+        .stock-container {
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .stock-bar {
+            height: 25px;
+            width: 550px;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+            background-color: #f0f0f0;
+            margin: 5px 10px;
+        }
+        
+        .stock-level {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 0.5s ease, background-color 0.5s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+        }
+        
+        .stock-high {
+            background: linear-gradient(to right, #4CAF50, #2E7D32);
+        }
+        
+        .stock-medium {
+            background: linear-gradient(to right, #FFC107, #FF9800);
+        }
+        
+        .stock-low {
+            background: linear-gradient(to right, #F44336, #D32F2F);
+        }
+        
+        .stock-critical {
+            background: linear-gradient(to right, #D32F2F, #B71C1C);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .stock-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* Updated product card styles */
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            flex-grow: 0;   
+        }
+        
+       
+        
+        .product-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            margin-top: 5px;
+        }
+        
+        .product-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .product-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-left: 20px;
+            flex-grow: 1;
+            margin-bottom: 5px;
+        }
+        
+        
+    
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .product-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .product-image {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .product-price {
+                margin-top: 5px;
+                align-self: flex-end;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -113,15 +233,47 @@ if ($conn->connect_error) {
 
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
+                    // Extract quantity number from the quantity field (handles formats like "5 pcs", "8m", etc.)
+                    $quantity = intval(preg_replace('/[^0-9]/', '', $row['quantity']));
+                    
+                    // Determine stock level class
+                    if ($quantity >= 20) {
+                        $stockClass = 'stock-high';
+                        $stockPercentage = 100;
+                    } elseif ($quantity >= 10) {
+                        $stockClass = 'stock-medium';
+                        $stockPercentage = ($quantity / 20) * 100;
+                    } elseif ($quantity >= 5) {
+                        $stockClass = 'stock-low';
+                        $stockPercentage = ($quantity / 10) * 100;
+                    } else {
+                        $stockClass = 'stock-critical';
+                        $stockPercentage = ($quantity / 5) * 100;
+                    }
+                    
+                    // Ensure percentage doesn't exceed 100
+                    $stockPercentage = min($stockPercentage, 100);
+                    
                     echo '<div class="product-card">';
-                    echo '<img src="' . htmlspecialchars($row['image']) . '" alt="' . htmlspecialchars($row['productName']) . '">';
-                    echo '<div class="details">';
-                    echo '<h4>' . htmlspecialchars($row['productName']) . '</h4>';
-                    echo '<p>' . htmlspecialchars($row['description']) . '</p>';
+                    echo '<div class="product-header">';
+                    echo '<img src="' . htmlspecialchars($row['image']) . '" alt="' . htmlspecialchars($row['productName']) . '" class="product-image">';
+                    
+                    
                     echo '</div>';
-                    echo '<div class="price-quantity">';
-                    echo '<p>Price: ' . htmlspecialchars($row['price']) . '</p>';
-                    echo '<p>In Stock: ' . htmlspecialchars($row['quantity']) . '</p>';
+                    
+                    
+                    
+                    echo '<div class="stock-container">';
+                    echo '<h3 class="product-title">' . htmlspecialchars($row['productName']) . '</h3>';
+                    echo '<div class="stock-bar">';
+                    echo '<div class="stock-level ' . $stockClass . '" style="width:' . $stockPercentage . '%">';
+                    echo $row['quantity'];
+                    echo '</div>';
+                    echo '</div>';
+                    echo '<div class="stock-info">';
+                    echo '<span>Stock Level</span>';
+                    echo '<span>' . $quantity . ' units</span>';
+                    echo '</div>';
                     echo '</div>';
                     echo '</div>';
                 }
@@ -133,7 +285,7 @@ if ($conn->connect_error) {
             $stmt->close();
             $conn->close();
             ?>
-            <a href="Products.php" class="more-link"><h4>More..</h4></a>
+            <a href="Products.php" class="more-link"><h4>More details..</h4></a>
             <a href="Products.php"><button class="products-button">Products Page</button></a>
         </div>
     </section>

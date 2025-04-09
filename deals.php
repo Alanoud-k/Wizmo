@@ -4,9 +4,9 @@ $servername = "localhost";
 $username = "root"; 
 $password = "root";
 $dbname = "Wizmo";
-$port = 8889;
+//$port = 8889;
 
-$conn = new mysqli($servername, $username, $password, $dbname, $port);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -336,7 +336,7 @@ while ($product_row = $products_result->fetch_assoc()) {
 
     <br>
     <?php if(!empty($success_message)): ?>
-        <div class="success-message">
+        <div class="success-message"> 
             <?php echo $success_message; ?>
         </div>
     <?php endif; ?>
