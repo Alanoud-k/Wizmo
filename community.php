@@ -6,7 +6,7 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-$connection = new mysqli("localhost", "root", "root", "Wizmo", 8889); // Update credentials if needed
+$connection = new mysqli("localhost", "root", "root", "Wizmo"); // Update credentials if needed
 if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
@@ -64,7 +64,7 @@ and open the template in the editor.
             </div>
 
             <div class="header-links">
-                <a href="profile.html"><svg class="header-icon"><use href="#account"/></svg></a>
+                <a href="profile.php"><svg class="header-icon"><use href="#account"/></svg></a>
                 <a href="HomePage.php"><svg class="header-icon"><use href="#home"/></svg></a>
                 <a href="login-signup.php"><svg class="header-icon"><use href="#logout"/></svg></a>
             </div>
@@ -77,7 +77,7 @@ and open the template in the editor.
             <li class="link2"><a href="Products.php">Products warehouse</a></li>
             <li class="link3"><a href="deals.php">Distributions deals</a></li>
             <li class="link4"><a href="community.php" class="active">Community</a></li>
-            <li class="link5"><a href="request.html">Requests</a></li>
+            <li class="link5"><a href="request.php">Requests</a></li>
         </ul>
         
     </nav>
@@ -86,44 +86,28 @@ and open the template in the editor.
         <div class="filters">
             <select class="filter-select" id="categoryFilter">
                 <option value="">Filter by Category</option>
-                <option value="agriculture">Agriculture</option>
-                <option value="construction">Construction</option>
-                <option value="education">Education</option>
-                <option value="entertainment">Entertainment</option>
-                <option value="fashion">Fashion & Beauty</option>
-                <option value="food">Food & Beverage</option>
-                <option value="health">Health & Wellness</option>
-                <option value="logistics">Logistics & Delivery</option>
-                <option value="manufacturing">Manufacturing</option>
-                <option value="retail">Retail</option>
-                <option value="services">Professional Services</option>
-                <option value="tech">Technology</option>
-                <option value="tourism">Tourism & Hospitality</option>
-                <option value="other">other</option>
+                <?php
+                $categoryQuery = "SELECT MIN(category) as category FROM Business GROUP BY LOWER(category) ORDER BY category ASC";
+
+                $categoryResult = $connection->query($categoryQuery);
+                while ($row = $categoryResult->fetch_assoc()) {
+                    $category = htmlspecialchars($row['category']);
+                    echo "<option value=\"$category\">$category</option>";
+                }
+                ?>
             </select>
 
             <select class="filter-select" id="cityFilter">
                 <option value="">Filter by City</option>
-                <option value="abha">Abha</option>
-                <option value="albahah">Al-Bahah</option>
-                <option value="alhasa">Al-Hasa</option>
-                <option value="alula">AlUla</option>
-                <option value="arara">Arar</option>
-                <option value="buraydah">Buraydah</option>
-                <option value="dammam">Dammam</option>
-                <option value="hail">Hail</option>
-                <option value="jazan">Jazan</option>
-                <option value="jeddah">Jeddah</option>
-                <option value="khobar">Khobar</option>
-                <option value="madinah">Madinah</option>
-                <option value="makkah">Makkah</option>
-                <option value="najran">Najran</option>
-                <option value="qurayyat">Al Qurayyat</option>
-                <option value="riyadh">Riyadh</option>
-                <option value="sakaka">Sakaka</option>
-                <option value="tabuk">Tabuk</option>
-                <option value="taif">Taif</option>
-                <option value="yanbu">Yanbu</option>
+                <?php
+                $cityQuery = "SELECT MIN(city) as city FROM Business GROUP BY LOWER(city) ORDER BY city ASC";
+
+                $cityResult = $connection->query($cityQuery);
+                while ($row = $cityResult->fetch_assoc()) {
+                    $city = htmlspecialchars($row['city']);
+                    echo "<option value=\"$city\">$city</option>";
+                }
+                ?>
             </select>
 
         </div>
