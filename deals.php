@@ -318,7 +318,7 @@ while ($product_row = $products_result->fetch_assoc()) {
             <div class="header-links">
                 <a href="profile.html"><svg class="header-icon"><use href="#account"/></svg></a>
                 <a href="HomePage.php"><svg class="header-icon"><use href="#home"/></svg></a>
-                <a href="login-signup.php"><svg class="header-icon"><use href="#logout"/></svg></a>
+                <a href="index.php"><svg class="header-icon"><use href="#logout"/></svg></a>
             </div>
         </div>
     </header>
