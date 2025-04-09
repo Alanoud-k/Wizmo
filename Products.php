@@ -612,7 +612,7 @@ if ($loggedInUser) {
                 <a href="HomePage.php"><svg class="header-icon">
                         <use href="#home" />
                     </svg></a>
-                <a href="signup.php"><svg class="header-icon">
+                <a href="index.php"><svg class="header-icon">
                         <use href="#logout" />
                     </svg></a>
             </div>
