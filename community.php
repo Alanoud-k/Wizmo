@@ -45,16 +45,20 @@ if ($connection->connect_error) {
 <body>
 <header>
     <div class="header-container">
-        <img src="images/wizmoLOGO.png" alt="logo" width="90" height="80" class="Navimg">
-        <div class="text-container">
-            <h2>WIZMO</h2>
-            <h3>your smartest warehouse gizmo</h3>
+        <div style="display: flex; align-items: center;">
+            <a href="Homepage.php" style="display: inline-block;">
+                <img src="images/wizmoLOGO.png" alt="logo" width="90" height="80" class="Navimg">
+            </a>
+            <div class="text-container">
+                <h2>WIZMO</h2>
+                <h3>your smartest warehouse gizmo</h3>
+            </div>
         </div>
         <div class="header-links">
-                <a href="profile.php"><svg class="header-icon"><use href="#account"/></svg></a>
-                <a href="Homepage.php"><svg class="header-icon"><use href="#home"/></svg></a>
-                <a href="index.php"><svg class="header-icon"><use href="#logout"/></svg></a>
-            </div>
+            <a href="profile.php"><svg class="header-icon"><use href="#account"/></svg></a>
+            <a href="Homepage.php"><svg class="header-icon"><use href="#home"/></svg></a>
+            <a href="index.php"><svg class="header-icon"><use href="#logout"/></svg></a>
+        </div>
     </div>
 </header>
 
