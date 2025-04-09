@@ -209,21 +209,14 @@ $conn->close();
             <label>Category:</label>
             <input type="text" name="category" value="<?= htmlspecialchars($category) ?>">
 
-            <label for="location">City</label>
-                        <select name="location" id="location" required>
-                          <option value="">-- Select City --</option>
-                          <?php
-                          $cities = [
-                                  "Abha", "Al-Bahah", "Al-Hasa", "AlUla", "Arar", "Buraydah", "Dammam", "Hail", "Jazan", "Jeddah",
-                                 "Khobar", "Madinah", "Makkah", "Najran", "Al Qurayyat", "Riyadh", "Sakaka", "Tabuk", "Taif", "Yanbu"
-                                 ];
-                             foreach ($cities as $cityOption):
-                                 $value = strtolower(str_replace([' ', '-'], '', $cityOption)); // Format value to match second dropdown
-                               ?>
-                           <option value="<?= $value ?>" <?= $value === strtolower($location ?? '') ? 'selected' : '' ?>>
-                          <?= $cityOption ?>
-                           </option>
-                           <?php endforeach; ?>
+            <label>Location:</label>
+                        <select name="city">
+                            <?php foreach (["Abha", "Al-Bahah", "Al-Hasa", "AlUla", "Arar", "Buraydah", "Dammam", "Hail", "Jazan", "Jeddah",
+                    "Khobar", "Madinah", "Makkah", "Najran", "Al Qurayyat", "Riyadh", "Sakaka", "Tabuk", "Taif", "Yanbu"] as $cityOption): ?>
+                            <option value="<?= $cityOption ?>" <?= $cityOption === $city ? 'selected' : '' ?>>
+                            <?= $cityOption ?>
+                            </option>
+                            <?php endforeach; ?>
                         </select>
 
             <label>Email:</label>
