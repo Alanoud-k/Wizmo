@@ -614,7 +614,7 @@ if ($loggedInUser) {
                 <a href="profile.php"><svg class="header-icon">
                         <use href="#account" />
                     </svg></a>
-                <a href="HomePage.php"><svg class="header-icon">
+                <a href="Homepage.php"><svg class="header-icon">
                         <use href="#home" />
                     </svg></a>
                 <a href="index.php"><svg class="header-icon">
@@ -834,7 +834,7 @@ if ($loggedInUser) {
         <div class="footer-section">
             <h4>Quick Links</h4>
             <ul>
-                <li><a href="HomePage.html">Home</a></li>
+                <li><a href="Homepage.html">Home</a></li>
                 <li><a href="aboutus.html">About Us</a></li>
                 <li><a href="Products.php">Products</a></li>
                 <li><a href="deals.html">Deals</a></li>
