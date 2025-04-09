@@ -184,7 +184,7 @@ if ($conn->connect_error) {
             <!-- Link images aligned to the right -->
             <div class="header-links">
                 <a href="profile.php"><svg class="header-icon"><use href="#account"/></svg></a>
-                <a href="HomePage.php"><svg class="header-icon"><use href="#home"/></svg></a>
+                <a href="Homepage.php"><svg class="header-icon"><use href="#home"/></svg></a>
                 <a href="index.php"><svg class="header-icon"><use href="#logout"/></svg></a>
             </div>
         </div>
@@ -297,7 +297,7 @@ if ($conn->connect_error) {
             <div class="footer-section">
                 <h4>Quick Links</h4>
                 <ul>
-                    <li><a href="HomePage.php">Home</a></li>
+                    <li><a href="Homepage.php">Home</a></li>
                     <li><a href="aboutus.php">About Us</a></li>
                     <li><a href="Products.php">Products</a></li>
                     <li><a href="deals.php">Deals</a></li>
