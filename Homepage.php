@@ -123,7 +123,7 @@ if ($conn->connect_error) {
     border: 5px outset #a85590;
     border-radius: 10px;
     background-color: #f9f9f9;
-    max-width: 1000px;
+    width: 650px;
     margin-top: 3px;
     margin-bottom: 20px;
 }
@@ -190,6 +190,12 @@ if ($conn->connect_error) {
                 margin-top: 5px;
                 align-self: flex-end;
             }
+        }
+        
+        .pmsg{
+            text-align: center;
+            font-weight: 400;
+            font-family: 'Courier New', Courier, monospace;
         }
     </style>
 </head>
@@ -302,7 +308,7 @@ if ($conn->connect_error) {
                     echo '</div>';
                 }
             } else {
-                echo '<p>No products found.</p>';
+                echo '<p class="pmsg">No products found.</p>';
             }
             
             // Close statement and connection
