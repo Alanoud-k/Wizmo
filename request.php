@@ -5,7 +5,7 @@ if (!isset($_SESSION['username'])) {
     exit();
 }
 
-$connection = new mysqli("localhost", "root", "root", "Wizmo", 8889);
+$connection = new mysqli("localhost", "root", "root", "Wizmo");
 if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }

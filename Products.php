@@ -4,10 +4,10 @@ $servername = "localhost";
 $username = "root";
 $password = "root"; // Assuming MAMP default password
 $dbname = "Wizmo";
-$port = 8889; // MAMP default port
+//$port = 8889; // MAMP default port
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname, $port);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
@@ -597,6 +597,14 @@ if ($loggedInUser) {
                 border-radius: 0 0 15px 15px;
             }
         }
+         .not-found-message {
+        text-align: center;
+        padding: 20px;
+        font-size: 18px;
+        color: #666;
+        width: 100%;
+        display: none; /* Hidden by default */
+    }
     </style>
 </head>
 
@@ -654,6 +662,9 @@ if ($loggedInUser) {
 
 <button class="add-product-btn" onclick="showAddPopup()">Add Product</button>
 <div id="productList" class="product-container">
+    <div id="notFoundMessage" class="not-found-message">
+    No products found matching your search.
+</div>
     <?php 
     // Display products from database
     foreach ($products as $product) {
@@ -790,20 +801,31 @@ if ($loggedInUser) {
     }
 
     // Function to search products by name
-    function searchProducts() {
-        let searchTerm = document.getElementById('searchInput').value.toLowerCase();
-        let productCards = document.querySelectorAll('.product-card');
+  function searchProducts() {
+    let searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    let productCards = document.querySelectorAll('.product-card');
+    let foundCount = 0;
+    
+    productCards.forEach(card => {
+        let productName = card.querySelector('.product-info strong').textContent.toLowerCase();
         
-        productCards.forEach(card => {
-            let productName = card.querySelector('.product-info strong').textContent.toLowerCase();
-            
-            if (productName.includes(searchTerm)) {
-                card.style.display = '';
-            } else {
-                card.style.display = 'none';
-            }
-        });
+        if (productName.includes(searchTerm)) {
+            card.style.display = '';
+            foundCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    // Show/hide not found message
+    let notFoundMsg = document.getElementById('notFoundMessage');
+    if (foundCount === 0 && searchTerm !== '') {
+        notFoundMsg.style.display = 'block';
+    } else {
+        notFoundMsg.style.display = 'none';
     }
+}
+    
 
     // Add event listener for real-time search as user types
     document.getElementById('searchInput').addEventListener('keyup', function(event) {

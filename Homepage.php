@@ -14,7 +14,7 @@ $password = "root";
 $dbname = "Wizmo";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname, 8889);
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
