@@ -310,14 +310,26 @@
             <li class="link2"><a href="Products.php">Products warehouse</a></li>
             <li class="link3"><a href="deals.php">Distributions deals</a></li>
             <li class="link4"><a href="community.php">Community</a></li>
-            <li class="link5"><a href="request.php">Requests</a></li>
+            <li class="link5"><a href="request.php">My Requests</a></li>
         </ul>
     </nav>
 
     <main>
+        
+        
+        
         <div class="page-header">
             <h1>About Wizmo</h1>
             <p>Streamlining warehouse management for small and medium enterprises</p>
+        </div>
+        
+        <div class="vision-card">
+            <h2>Our Vision</h2>
+            <p>Our vision is to empower Small and Medium-sized Enterprises (SMEs) by revolutionizing their warehouse operations. We aim to eliminate the challenges of inefficient inventory management, fragmented distribution, and isolated operations by providing a streamlined, collaborative platform.</p>
+            <p>Through our Warehouse Management System, SMEs will achieve real-time stock visibility, seamless product distribution, and a thriving community network, ultimately minimizing stock shortages, optimizing resources, and fostering local business collaboration.</p>
+            <div style="text-align: center;">
+                <a href="community.php" class="action-button">Join Our Community</a>
+            </div>
         </div>
 
         <div class="card">
@@ -387,14 +399,7 @@
             </div>
         </div>
 
-        <div class="vision-card">
-            <h2>Our Vision</h2>
-            <p>Our vision is to empower Small and Medium-sized Enterprises (SMEs) by revolutionizing their warehouse operations. We aim to eliminate the challenges of inefficient inventory management, fragmented distribution, and isolated operations by providing a streamlined, collaborative platform.</p>
-            <p>Through our Warehouse Management System, SMEs will achieve real-time stock visibility, seamless product distribution, and a thriving community network, ultimately minimizing stock shortages, optimizing resources, and fostering local business collaboration.</p>
-            <div style="text-align: center;">
-                <a href="community.php" class="action-button">Join Our Community</a>
-            </div>
-        </div>
+        
     </main>
 
     <!-- Footer -->
@@ -408,7 +413,7 @@
                     <li><a href="Products.php">Products</a></li>
                     <li><a href="deals.php">Deals</a></li>
                     <li><a href="community.php">Community</a></li>
-                    <li><a href="request.php">Requests</a></li>
+                    <li><a href="request.php">My Requests</a></li>
                 </ul>
             </div>
             <div class="footer-section">

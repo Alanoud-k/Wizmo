@@ -104,73 +104,106 @@ while ($row = $sentResult->fetch_assoc()) {
         body {
             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
             background-color: #f8f8f8;
+            
         }
-        .request, .accepted {
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            margin-right: 40px;
-            margin-left: 40px;
-        }
-        .request img, .accepted img {
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
-        }
-        .phone-number {
-            font-weight: bold;
-            color: #1e3348;
-            margin-top: 5px;
-        }
-        button {
-            background-color: #1e3348;
-            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-            font-size: 17px;
-            font-weight: 800;
-            color: white;
-            text-decoration: none;
-            display: inline-block;
-            position: relative;
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            z-index: 1;
-            margin-left: auto;
-            padding: 5px 10px;
-        }
-        button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(130deg, #800080, #e47a8f);
-            border-radius: 25px;
-            opacity: 0;
-            transition: all 0.3s ease;
-            z-index: -1;
-        }
-        button:hover::before,
-        button.active::before {
-            transform: translate(-50%, -50%) scale(1);
-            opacity: 1;
-        }
-        button:hover {
-            color: white;
-            z-index: 1;
-        }
-        h2 {
-            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-            margin: 20px;
-        }
+        
         .section {
-            margin-bottom: 30px;
-        }
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin: 20px 40px;
+    transition: all 0.3s ease;
+}
+
+.section:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.section h2 {
+    color: #1e3348;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.request, .accepted {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+    transition: all 0.2s ease;
+}
+
+.request:hover, .accepted:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-2px);
+}
+
+.request img, .accepted img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 15px;
+    border: 1px solid #ddd;
+}
+
+.request div, .accepted div {
+    flex: 1;
+}
+
+.request strong, .accepted strong {
+    color: #1e3348;
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.request p, .accepted p {
+    color: #555;
+    margin: 5px 0;
+    font-size: 0.95rem;
+}
+
+.phone-number {
+    color: #1e3348;
+    font-weight: bold;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.phone-number::before {
+    content: "📞";
+    margin-right: 8px;
+}
+
+button {
+    background-color: #1e3348;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    margin-left: 15px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    font-size: 15px;
+}
+
+button:hover {
+    background-color: #2b4365;
+    transform: translateY(-1px);
+    background: linear-gradient(130deg, #800080, #e47a8f);
+}
+
+button:active {
+    transform: translateY(0);
+}
     </style>
 </head>
 <body>
@@ -199,7 +232,7 @@ while ($row = $sentResult->fetch_assoc()) {
             <li class="link2"><a href="Products.php">Products warehouse</a></li>
             <li class="link3"><a href="deals.php">Distributions deals</a></li>
             <li class="link4"><a href="community.php">Community</a></li>
-            <li class="link5"><a href="request.php" class="active">Requests</a></li>
+            <li class="link5"><a href="request.php" class="active">My Requests</a></li>
         </ul>
     </nav>
 
@@ -303,7 +336,7 @@ while ($row = $sentResult->fetch_assoc()) {
                     <li><a href="Products.php">Products</a></li>
                     <li><a href="deals.php">Deals</a></li>
                     <li><a href="community.php">Community</a></li>
-                    <li><a href="request.php" class="active">Requests</a></li>
+                    <li><a href="request.php" class="active">My Requests</a></li>
                 </ul>
             </div>
             <div class="footer-section">

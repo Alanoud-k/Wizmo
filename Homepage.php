@@ -60,7 +60,7 @@ if ($conn->connect_error) {
         
         .stock-bar {
             height: 25px;
-            width: 550px;
+            width: 600px;
             border-radius: 12px;
             position: relative;
             overflow: hidden;
@@ -115,6 +115,27 @@ if ($conn->connect_error) {
         }
         
         /* Updated product card styles */
+        
+        .product-list-container {
+    margin-left: 70px; /* Adjusted margin-left */
+    margin-right: 40px;
+    padding: 20px;
+    border: 5px outset #a85590;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    max-width: 1000px;
+    margin-top: 3px;
+    margin-bottom: 20px;
+}
+
+.product-list-container h2 {
+    text-align: center;
+    color: #333;
+    font-weight: bolder;
+    font-size: 30px;
+    margin-bottom: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
         .product-card {
             background: white;
             border-radius: 10px;
@@ -142,12 +163,12 @@ if ($conn->connect_error) {
         }
         
         .product-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-            margin-left: 20px;
-            flex-grow: 1;
-            margin-bottom: 5px;
+             margin: 0;
+    font-size: 18px;
+    color: #333;
+    background-color: #eaeaea;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
         }
         
         
@@ -199,7 +220,7 @@ if ($conn->connect_error) {
             <li class="link2"><a href="Products.php">Products warehouse</a></li>
             <li class="link3"><a href="deals.php">Distributions deals</a></li>
             <li class="link4"><a href="community.php">Community</a></li>
-            <li class="link5"><a href="request.php">Requests</a></li>
+            <li class="link5"><a href="request.php">My Requests</a></li>
         </ul>
     </nav>
     <main class="home-content">
@@ -258,15 +279,16 @@ if ($conn->connect_error) {
                     
                     echo '<div class="product-card">';
                     echo '<div class="product-header">';
-                    echo '<img src="' . htmlspecialchars($row['image']) . '" alt="' . htmlspecialchars($row['productName']) . '" class="product-image">';
                     
+                    echo '<img src="' . htmlspecialchars($row['image']) . '" alt="' . htmlspecialchars($row['productName']) . '" class="product-image">';
+                    echo '<h3 class="product-title">' . htmlspecialchars($row['productName']) . '</h3>';
                     
                     echo '</div>';
                     
                     
                     
                     echo '<div class="stock-container">';
-                    echo '<h3 class="product-title">' . htmlspecialchars($row['productName']) . '</h3>';
+                    
                     echo '<div class="stock-bar">';
                     echo '<div class="stock-level ' . $stockClass . '" style="width:' . $stockPercentage . '%">';
                     echo $row['quantity'];
@@ -288,8 +310,9 @@ if ($conn->connect_error) {
             $conn->close();
             ?>
             <a href="Products.php" class="more-link"><h4>More details..</h4></a>
-            <a href="Products.php"><button class="products-button">Products Page</button></a>
+            
         </div>
+          <a href="Products.php"><button class="products-button">Products Page</button></a>
     </section>
   </main>
 
@@ -304,7 +327,7 @@ if ($conn->connect_error) {
                     <li><a href="Products.php">Products</a></li>
                     <li><a href="deals.php">Deals</a></li>
                     <li><a href="community.php">Community</a></li>
-                    <li><a href="request.php">Requests</a></li>
+                    <li><a href="request.php">My Requests</a></li>
                 </ul>
             </div>
             <div class="footer-section">

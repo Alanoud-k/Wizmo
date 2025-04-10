@@ -178,7 +178,7 @@ $conn->close();
         <li class="link2"><a href="Products.php">Products warehouse</a></li>
         <li class="link3"><a href="deals.php">Distributions deals</a></li>
         <li class="link4"><a href="Community.php">Community</a></li>
-        <li class="link5"><a href="request.php">Requests</a></li>
+        <li class="link5"><a href="request.php">My Requests</a></li>
     </ul>
 
 </nav>
@@ -250,7 +250,7 @@ $conn->close();
                 <li><a href="Products.php">Products</a></li>
                 <li><a href="deals.php">Deals</a></li>
                 <li><a href="Community.php">Community</a></li>
-                <li><a href="request.php">Requests</a></li>
+                <li><a href="request.php">My Requests</a></li>
             </ul>
         </div>
         <div class="footer-section">

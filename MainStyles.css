@@ -35,6 +35,8 @@ header {
     fill: #800080; /* Change color on hover */
 }
 
+
+
 /* Align logo and text side by side */
 .header-container .Navimg {
     width: 100px;
@@ -139,6 +141,7 @@ header {
     color: white;
     z-index: 1;
 }
+
 
 /* Footer Styles */
 footer {
@@ -430,8 +433,9 @@ ul li {
     font-size: 17px;
     font-weight: 800;
     transition: background-color 0.3s ease;
-    margin-left: 50px; /* Adjusted margin-left */
+    margin-left: 70px; /* Adjusted margin-left */
     margin-right: 40px;
+    margin-top: 0;
 }
 
 .products-button:hover {

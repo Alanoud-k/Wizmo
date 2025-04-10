@@ -344,7 +344,7 @@ while ($product_row = $products_result->fetch_assoc()) {
             <li class="link2"><a href="Products.html">Products warehouse</a></li>
             <li class="link3"><a href="deals.php" class="active">Distributions deals</a></li>
             <li class="link4"><a href="community.html">Community</a></li>
-            <li class="link5"><a href="request.html">Requests</a></li>
+            <li class="link5"><a href="request.html">My Requests</a></li>
         </ul>
     </nav>
 
