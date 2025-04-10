@@ -12,9 +12,10 @@ $servername = "localhost";
 $username = "root";
 $password = "root";
 $dbname = "Wizmo";
+$port = 8889; // MAMP default port
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname,$port);
 
 // Check connection
 if ($conn->connect_error) {
