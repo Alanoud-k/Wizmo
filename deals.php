@@ -477,7 +477,7 @@ while ($product_row = $products_result->fetch_assoc()) {
                     <li><a href="Products.php">Products</a></li>
                     <li><a href="deals.php">Deals</a></li>
                     <li><a href="community.php">Community</a></li>
-                    <li><a href="request.html">Requests</a></li>
+                    <li><a href="request.php">Requests</a></li>
                 </ul>
             </div>
             <div class="footer-section">
