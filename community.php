@@ -228,12 +228,12 @@ window.addEventListener('click', (event) => {
         <div class="footer-section">
             <h4>Quick Links</h4>
             <ul>
-                <li><a href="HomePage.html">Home</a></li>
-                <li><a href="aboutus.html">About Us</a></li>
-                <li><a href="Products.html">Products</a></li>
-                <li><a href="deals.html">Deals</a></li>
-                <li><a href="community.html">Community</a></li>
-                <li><a href="request.html">Requests</a></li>
+                <li><a href="HomePage.php">Home</a></li>
+                <li><a href="aboutus.php">About Us</a></li>
+                <li><a href="Products.php">Products</a></li>
+                <li><a href="deals.php">Deals</a></li>
+                <li><a href="community.php">Community</a></li>
+                <li><a href="request.php">Requests</a></li>
             </ul>
         </div>
         <div class="footer-section">

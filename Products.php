@@ -852,12 +852,12 @@ if ($loggedInUser) {
         <div class="footer-section">
             <h4>Quick Links</h4>
             <ul>
-                <li><a href="Homepage.html">Home</a></li>
-                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="Homepage.php">Home</a></li>
+                <li><a href="aboutus.php">About Us</a></li>
                 <li><a href="Products.php">Products</a></li>
-                <li><a href="deals.html">Deals</a></li>
-                <li><a href="community.html">Community</a></li>
-                <li><a href="request.html">Request</a></li>
+                <li><a href="deals.php">Deals</a></li>
+                <li><a href="community.php">Community</a></li>
+                <li><a href="request.php">Request</a></li>
             </ul>
         </div>
         <div class="footer-section">
